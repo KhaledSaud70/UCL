@@ -3,6 +3,8 @@ import random
 import numpy as np
 import os
 from pathlib import Path
+import torch
+import torch.distributed as dist
 
 
 def arg2bool(val):
@@ -91,3 +93,31 @@ def warmup_learning_rate(args, epoch, batch_id, total_batches, optimizer):
 class pretty_dict(dict):                                              
     def __str__(self):
         return str({k: round(v, 3) if isinstance(v,float) else v for k, v in self.items()})
+    
+def is_dist_avail_and_initialized():
+    if not dist.is_available():
+        return False
+    if not dist.is_initialized():
+        return False
+    return True
+
+
+def get_world_size():
+    if not is_dist_avail_and_initialized():
+        return 1
+    return dist.get_world_size()
+
+
+def get_rank():
+    if not is_dist_avail_and_initialized():
+        return 0
+    return dist.get_rank()
+
+
+def is_main_process():
+    return get_rank() == 0
+
+
+def save_on_master(*args, **kwargs):
+    if is_main_process():
+        torch.save(*args, **kwargs)

@@ -8,6 +8,7 @@ import torch.nn.functional as F
 import torch.utils.data
 import torchvision
 import argparse
+from pathlib import Path
 import data
 import models
 import losses
@@ -17,7 +18,7 @@ import torch.utils.tensorboard
 
 from torchvision import transforms
 from torchvision import datasets
-from util import AverageMeter, NViewTransform, accuracy, ensure_dir, set_seed, arg2bool, warmup_learning_rate
+from util import AverageMeter, NViewTransform, accuracy, ensure_dir, set_seed, arg2bool, warmup_learning_rate, save_on_master
 from lars import LARS
 
 def parse_arguments():
@@ -28,6 +29,8 @@ def parse_arguments():
     parser.add_argument('--print_freq', type=int, help='print frequency', default=10)
     parser.add_argument('--trial', type=int, help='random seed / trial id', default=0)
     parser.add_argument('--log_dir', type=str, help='tensorboard log dir', default='logs')
+    parser.add_argument('--output_dir', default='', help='path where to save, empty for no saving')
+    parser.add_argument('--save_every', default=None, type=int, help='save model every epochs')
 
     parser.add_argument('--data_dir', type=str, help='path of data dir', required=True, default='/data')
     parser.add_argument('--dataset', type=str, help='dataset (format name_attr e.g. biased-mnist_0.999)', required=True)
@@ -137,8 +140,9 @@ def load_data(opts):
         T_train = NViewTransform(T_train, opts.n_views)
 
 
-    if opts.dataset == 'items':
+    if opts.dataset == 'danube':
         train_dataset = data.DanubeDataset(root=opts.data_dir, transform=T_train)
+        opts.n_classes = train_dataset.num_classes
         train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
 
         test_dataset = data.DanubeDataset(root=opts.data_dir, transform=T_test)
@@ -155,7 +159,6 @@ def load_data(opts):
 
         print(len(train_dataset), 'training images')
         print(len(test_dataset), 'test images')
-        opts.n_classes = train_dataset.num_classes
     
     
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=opts.batch_size, shuffle=True,
@@ -534,7 +537,7 @@ if __name__ == '__main__':
                 f"lr{opts.lr}_{opts.lr_decay}_t{opts.temp}_eps{opts.epsilon}_"
                 f"lr-eps{opts.lr_epsilon}_feat{opts.feat_dim}_"
                 f"{'identity_' if opts.train_on_head else 'head_'}"
-                f"alpha{opts.alpha}_beta{opts.beta}_lambda{opts.lambd}_kld{opts.kld}_{opts.dist}_"
+                f"alpha{opts.alpha}_beta{opts.beta}_lambda{opts.lambd}_kld{opts.kld}_" # remove {opts.dist}_
                 f"mlp_lr{opts.mlp_lr}_mlp_optimizer_{opts.mlp_optimizer}_"
                 f"trial{opts.trial}")
     tb_dir = os.path.join(opts.log_dir, run_name)
@@ -572,6 +575,9 @@ if __name__ == '__main__':
     if opts.amp:
         print("Using AMP")
     
+    output_dir = Path(opts.output_dir)
+    torch.save(opts, output_dir / "args.pyT")
+    
     start_time = time.time()
     best_acc = 0.
     for epoch in range(1, opts.epochs + 1):
@@ -592,6 +598,19 @@ if __name__ == '__main__':
         
         if scheduler is not None:
             scheduler.step()
+        
+        if opts.output_dir:
+            checkpoint_paths = [output_dir / 'checkpoint.pth']
+            if opts.save_every is not None:
+                if epoch % opts.save_every == 0: checkpoint_paths.append(output_dir / 'checkpoint_{}.pth'.format(epoch))
+            for checkpoint_path in checkpoint_paths:
+                save_on_master({
+                    'model': model.state_dict(),
+                    'optimizer': optimizer.state_dict(),
+                    'scheduler': scheduler.state_dict(),
+                    'epoch': epoch,
+                    'opts': opts,
+                }, checkpoint_path)
 
         if (epoch % opts.test_freq == 0) or epoch == 1 or epoch == opts.epochs:
             loss_test, accuracy_test, aligned_sim, conflicting_sim, \

@@ -5,7 +5,7 @@ import numpy as np
 from torchvision import transforms
 from torch.utils.data import Dataset, Subset
 import torch
-from map import MapDataset
+from .map import MapDataset
 
 
 class DanubeDataset(Dataset):
@@ -47,6 +47,10 @@ class DanubeDataset(Dataset):
         std = torch.stack(pixel_stds).mean(0)
 
         return mean, std
+    
+    @property
+    def num_classes(self):
+        return len(self.classes)
 
     def __getitem__(self, idx):
         item_info = self._detection_data[idx]
@@ -58,9 +62,6 @@ class DanubeDataset(Dataset):
 
     def __len__(self):
         return len(self._detection_data)
-
-    def num_classes(self):
-        return len(self.classes)
 
 
 if __name__ == '__main__':
@@ -77,16 +78,17 @@ if __name__ == '__main__':
 
     test_dataset = DanubeDataset(root, transform=transform)
     test_dataset = MapDataset(test_dataset, lambda x, y: (x, y, 0))
+    train_dataset.num_classes
 
 
-    test_size = 0.1
-    data_size = len(train_dataset)
-    indices = list(range(data_size))
-    np.random.shuffle(indices)
-    split = int(np.floor(test_size * data_size))
-    train_idx, test_idx = indices[split:], indices[:split]
+    # test_size = 0.1
+    # data_size = len(train_dataset)
+    # indices = list(range(data_size))
+    # np.random.shuffle(indices)
+    # split = int(np.floor(test_size * data_size))
+    # train_idx, test_idx = indices[split:], indices[:split]
 
-    train_dataset = Subset(train_dataset, train_idx)
-    val_dataset = Subset(test_dataset, test_idx)
+    # train_dataset = Subset(train_dataset, train_idx)
+    # val_dataset = Subset(test_dataset, test_idx)
 
-    print(f"Train size: {len(train_dataset)}, test size: {len(val_dataset)}")
+    # print(f"Train size: {len(train_dataset)}, test size: {len(val_dataset)}")
