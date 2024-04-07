@@ -32,6 +32,7 @@ def parse_arguments():
     parser.add_argument('--data_dir', type=str, help='path of data dir', required=True, default='/data')
     parser.add_argument('--dataset', type=str, help='dataset (format name_attr e.g. biased-mnist_0.999)', required=True)
     parser.add_argument('--batch_size', type=int, help='batch size', default=256)
+    parser.add_argument('--test_percent', type=float, help='percentage of data to be used for testing', default=0.2)
 
     parser.add_argument('--epochs', type=int, help='number of epochs', default=100)
     parser.add_argument('--lr', type=float, help='learning rate', default=0.01)
@@ -90,50 +91,14 @@ def parse_arguments():
     return opts
 
 def load_data(opts):
-    if opts.dataset == 'cifar10':
-        mean = (0.4914, 0.4822, 0.4465)
-        std = (0.2023, 0.1994, 0.2010)
+    if opts.dataset != 'danube':
+        ValueError(f"Can\'t build {opts.dataset}")
 
-    elif opts.dataset == 'cifar100':
-        mean = (0.5071, 0.4867, 0.4408)
-        std = (0.2675, 0.2565, 0.2761)
+    if opts.dataset == 'danube':
+        mean = (0.5583, 0.4707, 0.4320)
+        std = (0.2333, 0.2389, 0.2386)
 
-    elif 'biased-mnist' in opts.dataset:
-        mean = (0.5, 0.5, 0.5)
-        std = (0.5, 0.5, 0.5)
-
-    elif 'corrupted-cifar10' in opts.dataset:
-        mean = (0.4914, 0.4822, 0.4465)
-        std = (0.2023, 0.1994, 0.2010)
-
-    elif 'imagenet' in opts.dataset:
-        mean = (0.485, 0.456, 0.406)
-        std = (0.229, 0.224, 0.225)
-    
-    elif 'bffhq' in opts.dataset:
-        mean = (0.4914, 0.4822, 0.4465)
-        std = (0.2023, 0.1994, 0.2010)
-
-    if 'cifar' in opts.dataset:
-        T_train = transforms.Compose([
-            transforms.RandomCrop(32, padding=4),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-        T_test = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-    
-    elif 'biased-mnist' in opts.dataset:
-        T_train = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-        T_test = T_train
-
-    elif opts.dataset in ['imagenet100', 'imagenet']:
+    if opts.dataset == 'danube':
         resize_size = 256
         crop_size = 224
         T_train = transforms.Compose([
@@ -168,87 +133,30 @@ def load_data(opts):
                 transforms.Normalize(mean, std)
             ])
 
-    
-    elif 'bffhq' in opts.dataset:
-        T_train = transforms.Compose([
-            transforms.Resize((224,224)),
-            transforms.RandomCrop(224, padding=4),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-        T_test = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-    
     if hasattr(opts, 'n_views'):
         T_train = NViewTransform(T_train, opts.n_views)
 
-    if opts.dataset == 'cifar10':
-        train_dataset = datasets.CIFAR10(root=opts.data_dir, transform=T_train, train=True, download=True)
+
+    if opts.dataset == 'items':
+        train_dataset = data.DanubeDataset(root=opts.data_dir, transform=T_train)
         train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
 
-        test_dataset = datasets.CIFAR10(root=opts.data_dir, transform=T_test, train=False, download=True)
+        test_dataset = data.DanubeDataset(root=opts.data_dir, transform=T_test)
         test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
 
-        opts.n_classes = 10
+        data_size = len(train_dataset)
+        indices = list(range(data_size))
+        np.random.shuffle(indices)
+        split = int(np.floor(opts.test_percent * data_size))
+        train_idx, valid_idx = indices[split:], indices[:split]
 
-    elif opts.dataset == 'cifar100':
-        train_dataset = datasets.CIFAR100(root=opts.data_dir, transform=T_train, train=True, download=True)
-        train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
+        train_dataset = torch.utils.data.Subset(train_dataset, train_idx)
+        test_dataset = torch.utils.data.Subset(test_dataset, valid_idx)
 
-        test_dataset = datasets.CIFAR100(root=opts.data_dir, transform=T_test, train=False, download=True)
-        test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
-        opts.n_classes = 100
-
-    elif 'corrupted-cifar10' in opts.dataset:
-        corruption = opts.dataset.replace('corrupted-cifar10_', '')
-        opts.corruption = corruption
-
-        train_dataset = data.CorruptedCIFAR10(root=opts.data_dir, split="train", percent=corruption, transform=T_train)
-        test_dataset = data.CorruptedCIFAR10(root=opts.data_dir, split="test", percent=corruption, transform=T_test)
-        opts.n_classes = 10
-
-    elif 'bffhq' in opts.dataset:
-        print("Loading BFFHQ")
-        percent = opts.dataset.replace('bffhq_', '')
-        opts.percent = percent
-
-        train_dataset = data.BFFHQ(root=opts.data_dir, split="train", percent=percent, transform=T_train)
-        test_dataset = data.BFFHQ(root=opts.data_dir, split="test", percent=percent, transform=T_test)
-        opts.n_classes = 2
-    
-    elif 'biased-mnist' in opts.dataset:
-        rho = float(opts.dataset.replace('biased-mnist_', ''))
-        opts.rho = rho
-
-        train_dataset = data.BiasedMNIST(root=opts.data_dir, train=True, transform=T_train,
-                                         download=True, data_label_correlation=rho)
-        test_dataset = data.BiasedMNIST(root=opts.data_dir, train=False, transform=T_test,
-                                        download=True, data_label_correlation=0.1)
-        opts.n_classes = 10
-
-    elif opts.dataset == 'imagenet100':
-        train_dataset = data.ImageNet100(root=os.path.join(opts.data_dir, 'train'), transform=T_train)
-        train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
         print(len(train_dataset), 'training images')
-
-        test_dataset = data.ImageNet100(root=os.path.join(opts.data_dir, 'val'), transform=T_test)
-        test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
         print(len(test_dataset), 'test images')
-        opts.n_classes = 100
+        opts.n_classes = train_dataset.num_classes
     
-    elif opts.dataset == 'imagenet':
-        train_dataset = torchvision.datasets.ImageFolder(root=os.path.join(opts.data_dir, 'train'), transform=T_train)
-        train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
-        print(len(train_dataset), 'training images')
-
-        test_dataset = torchvision.datasets.ImageFolder(root=os.path.join(opts.data_dir, 'val'), transform=T_test)
-        test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
-        print(len(test_dataset), 'test images')
-        opts.n_classes = 1000
     
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=opts.batch_size, shuffle=True,
                                                num_workers=8, persistent_workers=True)
