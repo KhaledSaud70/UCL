@@ -2,3 +2,6 @@ __pycache__/
 wandb/
 logs/
 weights/
+temp.ipynb
+contrastive/
+assets/

@@ -3,92 +3,106 @@ import json
 from PIL import Image
 import numpy as np
 from torchvision import transforms
-from torch.utils.data import Dataset, Subset
+from torch.utils.data import Dataset, Subset, DataLoader
 import torch
-from .map import MapDataset
+from map import MapDataset
+from tqdm import tqdm
 
 
 class DanubeDataset(Dataset):
-    def __init__(self, root, transform=None):
-        self.root = root
+    def __init__(self, data_dir, transform=None):
+        self.data_dir = data_dir
         self.transform = transform
         self.classes = set() 
+        self.metadata = []
         self._load_data()
 
     def _load_data(self):
-        self.image = Image.open(os.path.join(self.root, 'reference.jpg')).rotate(180).convert('RGB')
-        with open(os.path.join(self.root, 'detection_data.json'), 'r') as f:
-            self._detection_data = json.load(f)
-        
-        for item_info in self._detection_data:
-            self.classes.add(item_info['class'])
+        cameras = [camera for camera in os.listdir(self.data_dir) if camera.startswith("camera")]
+        for camera in cameras:
+            camera_path = os.path.join(self.data_dir, camera)
+            if os.path.isdir(camera_path):
+                reference_image_path = os.path.join(camera_path, 'reference.jpg')
+                metadata_path = os.path.join(camera_path, 'metadata.json')
+
+                with open(metadata_path, 'r') as f:
+                    metadata = json.load(f)
+
+                for entry in metadata:
+                    entry['camera'] = camera
+                    self.classes.add(entry['class'])
+                    entry['image_path'] = reference_image_path
+                    self.metadata.append(entry)
 
     def _apply_transform(self, image):
         if self.transform:
             return self.transform(image)
         return image
     
-    def _compute_mean_std(self):
-        pixel_means = []
-        pixel_stds = []
+    def __getitem__(self, idx):
+        entry = self.metadata[idx]
+        # print(entry)
+        image_path = entry['image_path']
+        x1, x2, y1, y2 = entry['box']['x1'], entry['box']['x2'], entry['box']['y1'], entry['box']['y2']
+        
+        image = Image.open(image_path).convert('RGB').crop((x1, y1, x2, y2))
+        image = self._apply_transform(image)
+        
+        item_class = entry['class']
+        return image, item_class
 
-        for item_info in self._detection_data:
-            x1, x2, y1, y2 = item_info['box']['x1'], item_info['box']['x2'], item_info['box']['y1'], item_info['box']['y2']
-            item_image = self.image.crop((x1, y1, x2, y2))
-            item_image = self._apply_transform(item_image)
+    def __len__(self):
+        return len(self.metadata)
 
-            if not isinstance(item_image, torch.Tensor):
-                item_image = transforms.ToTensor()(item_image)
-
-            pixel_means.append(torch.mean(item_image, dim=(1, 2)))
-            pixel_stds.append(torch.std(item_image, dim=(1, 2)))
-
-        mean = torch.stack(pixel_means).mean(0)
-        std = torch.stack(pixel_stds).mean(0)
-
-        return mean, std
-    
     @property
     def num_classes(self):
         return len(self.classes)
 
-    def __getitem__(self, idx):
-        item_info = self._detection_data[idx]
-        x1, x2, y1, y2 = item_info['box']['x1'], item_info['box']['x2'], item_info['box']['y1'], item_info['box']['y2']
-        item_image = self.image.crop((x1, y1, x2, y2))
-        item_image = self._apply_transform(item_image)
-        item_class = item_info['class']
-        return item_image, item_class
+def compute_mean_std(dataloader):
+    # var[X] = E[X**2] - E[X]**2
+    channels_sum, channels_sqrd_sum, num_batches = 0, 0, 0
 
-    def __len__(self):
-        return len(self._detection_data)
+    for images, _ in tqdm(dataloader):  # (B,H,W,C)
+        channels_sum += torch.mean(images, dim=[0, 2, 3])
+        channels_sqrd_sum += torch.mean(images ** 2, dim=[0, 2, 3])
+        num_batches += 1
+
+    mean = channels_sum / num_batches
+    std = (channels_sqrd_sum / num_batches - mean ** 2) ** 0.5
+
+    return mean, std
 
 
 if __name__ == '__main__':
-    root = f'/home/{os.environ.get("USER")}/workspace/projects/ucl/debiasing/data/camera_ip'
+    data_dir = f'/home/{os.environ.get("USER")}/workspace/projects/ucl/debiasing/data/'
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor()
     ])
 
-    train_dataset = DanubeDataset(root, transform=transform)
-    train_dataset = MapDataset(train_dataset, lambda x, y: (x, y, 0))
+    dataset = DanubeDataset(data_dir, transform=transform)
+    dataloader = DataLoader(dataset, batch_size=64, shuffle=False, pin_memory=True)
+
+    # Mean = tensor([0.5732, 0.4699, 0.4269]), Std = tensor([0.2731, 0.2662, 0.2697])
+    mean, std = compute_mean_std(dataloader)
+    print(f"Mean = {mean}, Std = {std}")
 
 
-    test_dataset = DanubeDataset(root, transform=transform)
-    test_dataset = MapDataset(test_dataset, lambda x, y: (x, y, 0))
-    train_dataset.num_classes
+
+    # products_dir = os.path.join(data_dir, 'products')
+    # os.makedirs(products_dir, exist_ok=True)
+
+    # to_pil = transforms.ToPILImage()
+    # for image, label in dataset:
+    #     image_pil = to_pil(image)
+    #     label_dir = os.path.join(products_dir, str(label))
+    #     os.makedirs(label_dir, exist_ok=True)
+    #     filename = f"{label}_{len(os.listdir(label_dir))}.jpg"
+    #     save_path = os.path.join(label_dir, filename)
+    #     image_pil.save(save_path)
+
+    # print("Cropped images saved successfully.")
 
 
-    # test_size = 0.1
-    # data_size = len(train_dataset)
-    # indices = list(range(data_size))
-    # np.random.shuffle(indices)
-    # split = int(np.floor(test_size * data_size))
-    # train_idx, test_idx = indices[split:], indices[:split]
-
-    # train_dataset = Subset(train_dataset, train_idx)
-    # val_dataset = Subset(test_dataset, test_idx)
-
-    # print(f"Train size: {len(train_dataset)}, test size: {len(val_dataset)}")
+    # the class of entery 1164 in camera_2/metadata changed from 68 to 32
