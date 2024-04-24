@@ -1,6 +1,6 @@
 program: main_infonce.py
 batch_size: 256
-data_dir: /home/khaled/workspace/projects/ucl/debiasing/data/camera_ip
+data_dir: data/
 output_dir: ./weights
 save_every: 10
 dataset: danube
@@ -9,4 +9,4 @@ epsilon: 0
 lr: 0.001
 lr_decay: step
 lr_decay_epochs: 26,53
-model: simpleconvnet
+model: resnet18

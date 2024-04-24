@@ -2,19 +2,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from torchvision import models as resnet_big
-from models import resnet_small
+from torchvision import models
 
 model_dict = {
-    # Imagenet variants
-    'resnet18': [resnet_big.resnet18, 512],
-    'resnet34': [resnet_big.resnet34, 512],
-    'resnet50': [resnet_big.resnet50, 2048],
-    'resnet101': [resnet_big.resnet101, 2048],
-
-    # Cifar variants
-    'resnet32': [resnet_small.resnet32, 64],
-    'resnet32x4': [lambda: resnet_small.resnet32(pool_k=4), 256]
+    'resnet18': [models.resnet18, 512],
+    'resnet34': [models.resnet34, 512],
+    'resnet50': [models.resnet50, 2048],
+    'resnet101': [models.resnet101, 2048],
+    # TODO add more backbones
 }
 
 

@@ -1,11 +1,9 @@
 import os
 import json
 from PIL import Image
-import numpy as np
 from torchvision import transforms
-from torch.utils.data import Dataset, Subset, DataLoader
+from torch.utils.data import Dataset, DataLoader
 import torch
-from map import MapDataset
 from tqdm import tqdm
 
 
@@ -74,7 +72,7 @@ def compute_mean_std(dataloader):
 
 
 if __name__ == '__main__':
-    data_dir = f'/home/{os.environ.get("USER")}/workspace/projects/ucl/debiasing/data/'
+    data_dir = f'/home/{os.environ.get("USER")}/workspace/projects/shlef-monitoring/src/data'
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
