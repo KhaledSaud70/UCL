@@ -34,9 +34,9 @@ def parse_arguments():
 
 def build_transforms():
     # Mean and std should be computed offline
-    mean = (0.5732, 0.4699, 0.4269)
-    std = (0.2731, 0.2662, 0.2697)
-    resize_size = 224
+    mean = (0.5525, 0.4640, 0.4124)
+    std = (0.2703, 0.2622, 0.2679)
+    resize_size = (224, 224)
 
     return transforms.Compose([
         transforms.Resize(resize_size),
@@ -49,14 +49,11 @@ def setup_model(cfg):
     if 'resnet' in cfg.model:
         model = models.SupConResNet(cfg.model)
 
-    elif cfg.model == 'simpleconvnet':
-        model = models.SupConSimpleConvNet()
-    
     else:
         ValueError(f'Unsupported model name {cfg.model}')
     
     if cfg.model_weights:
-        checkpoint.load_checkpoint(cfg.model_weights, model, remove_fc=True)
+        checkpoint.load_checkpoint(cfg.model_weights, model)
 
 
     if cfg.device == 'cuda' and torch.cuda.device_count() > 1:

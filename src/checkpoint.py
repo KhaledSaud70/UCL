@@ -10,24 +10,21 @@
 import os
 import torch
 
-def load_checkpoint(checkpoint_file, model, remove_fc=False):
+def load_checkpoint(checkpoint_file, model):
     """Loads the checkpoint from the given file."""
     err_str = "Checkpoint '{}' not found"
     assert os.path.exists(checkpoint_file), err_str.format(checkpoint_file)
     # Load the checkpoint on CPU to avoid GPU mem spike
     checkpoint = torch.load(checkpoint_file, map_location="cpu")
     try:
-        state_dict = checkpoint["model"]
+        if 'state_dict' in checkpoint:
+            state_dict = checkpoint["state_dict"]
+        else:
+            state_dict = checkpoint["model"]
     except KeyError:
         state_dict = checkpoint
 
     model_dict = model.state_dict()
-
-    # Remove keys related to the classification layer from the checkpoint state dict
-    if remove_fc:
-        fc_keys = [key for key in state_dict.keys() if key.startswith('fc.')]
-        for key in fc_keys:
-            del state_dict[key]
 
     state_dict = {k : v for k, v in state_dict.items()}
     weight_dict = {k : v for k, v in state_dict.items() if k in model_dict and model_dict[k].size() == v.size()}
