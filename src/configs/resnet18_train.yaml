@@ -1,4 +1,4 @@
-program: main_infonce.py
+program: train.py
 batch_size: 256
 data_dir: data/
 output_dir: ./weights
