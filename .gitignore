@@ -3,5 +3,3 @@ wandb/
 logs/
 weights/
 notebooks/
-data/*/images/
-data/*/labels/
