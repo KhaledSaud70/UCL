@@ -6,7 +6,6 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.utils.data
-import torchvision
 import argparse
 from pathlib import Path
 import data
@@ -17,12 +16,11 @@ import wandb
 import torch.utils.tensorboard
 
 from torchvision import transforms
-from torchvision import datasets
 from util import AverageMeter, NViewTransform, accuracy, ensure_dir, set_seed, arg2bool, warmup_learning_rate, save_on_master
 from lars import LARS
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Contrastive debiasing",
+    parser = argparse.ArgumentParser(description="Product Recognition Training",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--device', type=str, help='torch device', default='cuda')
@@ -35,7 +33,8 @@ def parse_arguments():
     parser.add_argument('--data_dir', type=str, help='path of data dir', required=True, default='/data')
     parser.add_argument('--dataset', type=str, help='dataset (format name_attr e.g. biased-mnist_0.999)', required=True)
     parser.add_argument('--batch_size', type=int, help='batch size', default=256)
-    parser.add_argument('--test_percent', type=float, help='percentage of data to be used for testing', default=0.2)
+    parser.add_argument('--test_percent', type=float, help='percentage of data to be used for testing', default=0.1)
+    parser.add_argument('--full_training', action='store_true', help='Perform training on full data only (no testing)')
 
     parser.add_argument('--epochs', type=int, help='number of epochs', default=100)
     parser.add_argument('--lr', type=float, help='learning rate', default=0.01)
@@ -78,30 +77,30 @@ def parse_arguments():
 
     parser.add_argument('--amp', action='store_true', help='use amp')
 
-    opts = parser.parse_args()
-    if opts.alpha_rand:
-        opts.alpha = random.random()
-        print("Sampling random alpha", opts.alpha)
+    cfg = parser.parse_args()
+    if cfg.alpha_rand:
+        cfg.alpha = random.random()
+        print("Sampling random alpha", cfg.alpha)
 
-    if opts.lambd_alpha_ratio > 0:
-        opts.lambd = opts.lambd_alpha_ratio * opts.alpha
-        print("lambda/alpha ratio ->", opts.lambd_alpha_ratio, "*", opts.alpha, "=", opts.lambd) 
+    if cfg.lambd_alpha_ratio > 0:
+        cfg.lambd = cfg.lambd_alpha_ratio * cfg.alpha
+        print("lambda/alpha ratio ->", cfg.lambd_alpha_ratio, "*", cfg.alpha, "=", cfg.lambd) 
 
-    if opts.selfsup and opts.n_views == 1:
+    if cfg.selfsup and cfg.n_views == 1:
         print("n_views must be > 1 if selfsup is true")
         exit(1)
 
-    return opts
+    return cfg
 
-def load_data(opts):
-    if opts.dataset != 'danube':
-        ValueError(f"Can\'t build {opts.dataset}")
+def load_data(cfg):
+    if cfg.dataset != 'danube':
+        ValueError(f"Can\'t build {cfg.dataset}")
 
-    if opts.dataset == 'danube':
+    if cfg.dataset == 'danube':
         mean = (0.5583, 0.4707, 0.4320)
         std = (0.2333, 0.2389, 0.2386)
 
-    if opts.dataset == 'danube':
+    if cfg.dataset == 'danube':
         resize_size = 256
         crop_size = 224
         T_train = transforms.Compose([
@@ -111,7 +110,7 @@ def load_data(opts):
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
-        if opts.augplus:
+        if cfg.augplus:
             T_train = transforms.Compose([
                 transforms.RandomResizedCrop(size=224, scale=(0.2, 1.)),
                 transforms.RandomHorizontalFlip(),
@@ -129,82 +128,82 @@ def load_data(opts):
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
-        if opts.augplus:
+        if cfg.augplus:
             T_test = transforms.Compose([
                 transforms.Resize((resize_size, resize_size)),
                 transforms.ToTensor(),
                 transforms.Normalize(mean, std)
             ])
 
-    if hasattr(opts, 'n_views'):
-        T_train = NViewTransform(T_train, opts.n_views)
+    if hasattr(cfg, 'n_views'):
+        T_train = NViewTransform(T_train, cfg.n_views)
 
 
-    if opts.dataset == 'danube':
-        train_dataset = data.DanubeDataset(root=opts.data_dir, transform=T_train)
-        opts.n_classes = train_dataset.num_classes
+    if cfg.dataset == 'danube':
+        if cfg.full_training:
+            cfg.test_percent = 0.0
+
+        train_dataset = data.DanubeDataset(root=cfg.data_dir, transform=T_train)
         train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
 
-        test_dataset = data.DanubeDataset(root=opts.data_dir, transform=T_test)
-        test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
+        if cfg.test_percent > 0.0:
+            test_dataset = data.DanubeDataset(root=cfg.data_dir, transform=T_test)
+            test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
 
-        data_size = len(train_dataset)
-        indices = list(range(data_size))
-        np.random.shuffle(indices)
-        split = int(np.floor(opts.test_percent * data_size))
-        train_idx, valid_idx = indices[split:], indices[:split]
+            data_size = len(train_dataset)
+            indices = list(range(data_size))
+            np.random.shuffle(indices)
+            split = int(np.floor(cfg.test_percent * data_size))
+            train_idx, valid_idx = indices[split:], indices[:split]
 
-        train_dataset = torch.utils.data.Subset(train_dataset, train_idx)
-        test_dataset = torch.utils.data.Subset(test_dataset, valid_idx)
+            train_dataset = torch.utils.data.Subset(train_dataset, train_idx)
+            test_dataset = torch.utils.data.Subset(test_dataset, valid_idx)
+
+        cfg.n_classes = train_dataset.num_classes
 
         print(len(train_dataset), 'training images')
         print(len(test_dataset), 'test images')
     
     
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=opts.batch_size, shuffle=True,
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.batch_size, shuffle=True,
                                                num_workers=8, persistent_workers=True)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=256, shuffle=False, num_workers=8, 
-                                              persistent_workers=True)
+    if not cfg.full_training:
+        test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=256, shuffle=False, num_workers=8, 
+                                                  persistent_workers=True)
+        return train_loader, test_loader
 
-    return train_loader, test_loader
+    return train_loader
 
-def load_model(opts):
-    if 'resnet' in opts.model:
-        model = models.SupConResNet(opts.model, feat_dim=opts.feat_dim,
-                                    num_classes=opts.n_classes,
-                                    train_on_head=opts.train_on_head)
+def load_model(cfg):
+    if 'resnet' in cfg.model:
+        model = models.SupConResNet(cfg.model, feat_dim=cfg.feat_dim,
+                                    num_classes=cfg.n_classes,
+                                    train_on_head=cfg.train_on_head)
         
-        if isinstance(model.encoder, torchvision.models.resnet.ResNet) and opts.dataset in ['cifar10', 'cifar100']:
-            print("Adjusting first conv layer for cifar")
-            model.encoder.conv1 = torch.nn.Conv2d(3, model.encoder.conv1.out_channels, 
-                                                  kernel_size=3, stride=1, padding=1, bias=False)
+    else:
+        ValueError(f'Unsupported model name {cfg.model}')
 
-    elif opts.model == 'simpleconvnet':
-        model = models.SupConSimpleConvNet(feat_dim=opts.feat_dim,
-                                           num_classes=opts.n_classes,
-                                           train_on_head=opts.train_on_head)
+    cfg.feat_dim = model.feat_dim
 
-    opts.feat_dim = model.feat_dim
-
-    if opts.device == 'cuda' and torch.cuda.device_count() > 1:
+    if cfg.device == 'cuda' and torch.cuda.device_count() > 1:
         print(f"Using multiple CUDA devices ({torch.cuda.device_count()})")
         model = torch.nn.DataParallel(model)
-    model = model.to(opts.device)
+    model = model.to(cfg.device)
 
-    if "infonce" in opts.method:
-        if "strong" in opts.method:
-            criterion = losses.EpsilonSupCon(temperature=opts.temp, form=opts.form, epsilon=opts.epsilon)
+    if "infonce" in cfg.method:
+        if "strong" in cfg.method:
+            criterion = losses.EpsilonSupCon(temperature=cfg.temp, form=cfg.form, epsilon=cfg.epsilon)
         else:
-            criterion = losses.EpsilonSupInfoNCE(temperature=opts.temp, form=opts.form, epsilon=opts.epsilon)
+            criterion = losses.EpsilonSupInfoNCE(temperature=cfg.temp, form=cfg.form, epsilon=cfg.epsilon)
 
     else:
-        raise ValueError('Unsupported loss function', opts.method)
+        raise ValueError('Unsupported loss function', cfg.method)
 
-    criterion = criterion.to(opts.device)
+    criterion = criterion.to(cfg.device)
     
     return model, criterion
 
-def load_optimizer(model, criterion, opts):
+def load_optimizer(model, criterion, cfg):
     if torch.cuda.device_count() > 1:
         parameters = [{'params': model.module.encoder.parameters()},
                     {'params': model.module.head.parameters()}]
@@ -212,47 +211,47 @@ def load_optimizer(model, criterion, opts):
         parameters = [{'params': model.encoder.parameters()},
                     {'params': model.head.parameters()}]
 
-    if opts.beta > 0:
+    if cfg.beta > 0:
         parameters = model.parameters()
 
-    if "auto" in opts.method:
+    if "auto" in cfg.method:
         parameters.append({'params': criterion.epsilon,
-                           'lr': opts.lr_epsilon,
+                           'lr': cfg.lr_epsilon,
                            'weight_decay': 0})
 
-    if opts.optimizer == "sgd":
-        optimizer = torch.optim.SGD(parameters, lr=opts.lr, 
-                                    momentum=opts.momentum,
-                                    weight_decay=opts.weight_decay)
-    elif opts.optimizer == "adam":
-        optimizer = torch.optim.Adam(parameters, lr=opts.lr, weight_decay=opts.weight_decay)
+    if cfg.optimizer == "sgd":
+        optimizer = torch.optim.SGD(parameters, lr=cfg.lr, 
+                                    momentum=cfg.momentum,
+                                    weight_decay=cfg.weight_decay)
+    elif cfg.optimizer == "adam":
+        optimizer = torch.optim.Adam(parameters, lr=cfg.lr, weight_decay=cfg.weight_decay)
 
     else:
-        optimizer = LARS(parameters, lr=opts.lr, momentum=opts.momentum, weight_decay=opts.weight_decay)
+        optimizer = LARS(parameters, lr=cfg.lr, momentum=cfg.momentum, weight_decay=cfg.weight_decay)
         
-    if opts.lr_decay == 'cosine':
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=opts.epochs, 
+    if cfg.lr_decay == 'cosine':
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=cfg.epochs, 
                                                                verbose=True)
-    elif opts.lr_decay == 'step':
-        milestones = [int(s) for s in opts.lr_decay_epochs.split(',')]
+    elif cfg.lr_decay == 'step':
+        milestones = [int(s) for s in cfg.lr_decay_epochs.split(',')]
         scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, verbose=True)
     
-    elif opts.lr_decay == 'none':
+    elif cfg.lr_decay == 'none':
         scheduler = None
 
     optimizer_fc, scheduler_fc = None, None
 
-    if opts.beta == 0:
+    if cfg.beta == 0:
         fc_params = model.fc.parameters() if torch.cuda.device_count() <= 1 else model.module.fc.parameters()
-        if opts.mlp_optimizer == "sgd":
-            optimizer_fc = torch.optim.SGD(fc_params, lr=opts.mlp_lr, momentum=0.9,
+        if cfg.mlp_optimizer == "sgd":
+            optimizer_fc = torch.optim.SGD(fc_params, lr=cfg.mlp_lr, momentum=0.9,
                                         weight_decay=0)
-        elif opts.mlp_optimizer == "adam":
-            optimizer_fc = torch.optim.Adam(fc_params, lr=opts.mlp_lr,
+        elif cfg.mlp_optimizer == "adam":
+            optimizer_fc = torch.optim.Adam(fc_params, lr=cfg.mlp_lr,
                                             weight_decay=0)
         
-        if opts.mlp_lr_decay == 'cosine':
-            scheduler_fc = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer_fc, T_max=opts.epochs, 
+        if cfg.mlp_lr_decay == 'cosine':
+            scheduler_fc = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer_fc, T_max=cfg.epochs, 
                                                                     verbose=True)
         else:
             scheduler_fc = None
@@ -260,7 +259,7 @@ def load_optimizer(model, criterion, opts):
     print((optimizer, scheduler), (optimizer_fc, scheduler_fc))
     return (optimizer, scheduler), (optimizer_fc, scheduler_fc)
 
-def train(train_loader, model, criterion, optimizers, opts, epoch, scaler=None):
+def train(train_loader, model, criterion, optimizers, cfg, epoch, scaler=None):
     loss = AverageMeter()
     nce = AverageMeter()
     ce = AverageMeter()
@@ -277,30 +276,30 @@ def train(train_loader, model, criterion, optimizers, opts, epoch, scaler=None):
         data_time.update(time.time() - t1)
 
         images = torch.cat(images, dim=0)
-        images, labels, bias_labels = images.to(opts.device), labels.to(opts.device), bias_labels.to(opts.device)
+        images, labels, bias_labels = images.to(cfg.device), labels.to(cfg.device), bias_labels.to(cfg.device)
         bsz = labels.shape[0]
         
-        warmup_learning_rate(opts, epoch, idx, len(train_loader), optimizer)
+        warmup_learning_rate(cfg, epoch, idx, len(train_loader), optimizer)
 
         with torch.set_grad_enabled(True):
             with torch.cuda.amp.autocast(scaler is not None):
                 projected, feats, logits = model(images)
                 
-                projected = torch.split(projected, [bsz]*opts.n_views, dim=0)
+                projected = torch.split(projected, [bsz]*cfg.n_views, dim=0)
                 projected = torch.cat([f.unsqueeze(1) for f in projected], dim=1)
 
-                feats = torch.split(feats, [bsz]*opts.n_views, dim=0)
+                feats = torch.split(feats, [bsz]*cfg.n_views, dim=0)
                 feats = torch.cat([f.unsqueeze(1) for f in feats], dim=1)
 
-                logits = torch.split(logits, [bsz]*opts.n_views, dim=0)
+                logits = torch.split(logits, [bsz]*cfg.n_views, dim=0)
                 logits = torch.cat([f.unsqueeze(1) for f in logits], dim=1)
 
                 running_nce = criterion(projected, feats[:, 0], logits, labels, bias_labels)
                 running_ce = F.cross_entropy(logits[:, 0], labels)
 
                 running_loss = running_nce
-                if opts.beta > 0:
-                    running_loss = running_nce + opts.beta*running_ce
+                if cfg.beta > 0:
+                    running_loss = running_nce + cfg.beta*running_ce
           
         optimizer.zero_grad()
 
@@ -333,7 +332,7 @@ def train(train_loader, model, criterion, optimizers, opts, epoch, scaler=None):
         t1 = time.time()
         eta = batch_time.avg * (len(train_loader) - idx)
 
-        if (idx + 1) % opts.print_freq == 0:
+        if (idx + 1) % cfg.print_freq == 0:
             print(f"Train: [{epoch}][{idx + 1}/{len(train_loader)}]:\t"
                   f"BT {batch_time.avg:.3f}\t"
                   f"ETA {datetime.timedelta(seconds=eta)}\t"
@@ -392,7 +391,7 @@ def measure_similarity(feat, labels, bias_labels):
            (negative_aligned_sim[torch.nonzero(neg_aligned, as_tuple=True)], negative_aligned_sim_mean.mean()), \
            (negative_conflicting_sim[torch.nonzero(neg_conflicting, as_tuple=True)], negative_conflicting_sim_mean.mean())
            
-def test(test_loader, model, criterion, opts):
+def test(test_loader, model, criterion, cfg):
     model.eval()
 
     loss = AverageMeter()
@@ -405,8 +404,8 @@ def test(test_loader, model, criterion, opts):
     negative_conflicting_similarity = AverageMeter()
 
     for images, labels, bias_labels in test_loader:
-        images, labels = images.to(opts.device), labels.to(opts.device)
-        bias_labels = bias_labels.to(opts.device)
+        images, labels = images.to(cfg.device), labels.to(cfg.device)
+        bias_labels = bias_labels.to(cfg.device)
 
         with torch.no_grad():
             projected, feats, logits = model(images)
@@ -451,103 +450,55 @@ def test(test_loader, model, criterion, opts):
            (negative_aligned_sim, negative_aligned_similarity.avg), \
            (negative_conflicting_sim, negative_conflicting_similarity.avg)
         
-def test_mlp(train_loader, test_loader, model, opts):
-    model.eval()
-    print("training linear classifier from scratch..")
-    train_features, train_labels = [], []
-    for images, labels, bias_labels in train_loader:
-        images, labels = images.to(opts.device), labels.to(opts.device)
-
-        with torch.no_grad():
-            projected, features, _ = model(images)
-        
-        if opts.train_on_head:
-            train_features.append(projected)
-        else:
-            train_features.append(features)
-
-        train_labels.append(labels)
-    
-    train_features = torch.cat(train_features)
-    train_labels = torch.cat(train_labels)
-    print('training features:', train_features.shape, train_labels.shape)
-
-    clf = models.MLPClassifier(hidden_layer_sizes=(), 
-                               learning_rate_init=0.001,
-                               max_iter=500,
-                               batch_size=2048,
-                               solver='adam')
-    clf.fit(train_features, train_labels)
-   
-    accuracy_train = clf.score(train_features, train_labels)*100
-    print(f'train accuracy: {accuracy_train:.2f}')
-
-    test_features, test_labels = [], []
-    for images, labels, _ in test_loader:
-        images, labels = images.to(opts.device), labels.to(opts.device)
-
-        with torch.no_grad():
-            projected, features, _ = model(images)
-        
-        if opts.train_on_head:
-            test_features.append(projected)
-        else:
-            test_features.append(features)
-
-        test_labels.append(labels)
-
-    test_features = torch.cat(test_features)
-    test_labels = torch.cat(test_labels)
-    print('test features:', test_features.shape, test_labels.shape)
-
-    accuracy_test = clf.score(test_features, test_labels)*100
-    return accuracy_train, accuracy_test
-
 if __name__ == '__main__':
-    opts = parse_arguments()
-    set_seed(opts.trial)
+    cfg = parse_arguments()
+    set_seed(cfg.trial)
 
-    train_loader, test_loader = load_data(opts)
-    model, infonce = load_model(opts)
-    (optimizer, scheduler), (optimizer_fc, scheduler_fc) = load_optimizer(model, infonce, opts)
+    if cfg.full_training:
+        train_loader = load_data(cfg)
+    else:
+        train_loader, test_loader = load_data(cfg)
+
+    model, infonce = load_model(cfg)
+    (optimizer, scheduler), (optimizer_fc, scheduler_fc) = load_optimizer(model, infonce, cfg)
     
-    if opts.batch_size > 256:
-        opts.warm = True
+    if cfg.batch_size > 256:
+        cfg.warm = True
     
-    if opts.warm:
-        opts.warm_epochs = 10
-        opts.warmup_from = 0.01
-        opts.model = f"{opts.model}_warm"
+    if cfg.warm:
+        cfg.warm_epochs = 10
+        cfg.warmup_from = 0.01
+        cfg.model = f"{cfg.model}_warm"
         
-        if opts.lr_decay == 'cosine':
-            eta_min = opts.lr * (0.1 ** 3)
-            opts.warmup_to = eta_min + (opts.lr - eta_min) * (1 + math.cos(math.pi * opts.warm_epochs / opts.epochs)) / 2
+        if cfg.lr_decay == 'cosine':
+            eta_min = cfg.lr * (0.1 ** 3)
+            cfg.warmup_to = eta_min + (cfg.lr - eta_min) * (1 + math.cos(math.pi * cfg.warm_epochs / cfg.epochs)) / 2
         else:
-            opts.warmup_to = opts.lr
+            cfg.warmup_to = cfg.lr
 
-    ensure_dir(opts.log_dir)
-    method = opts.method
-    if opts.selfsup:
+    ensure_dir(cfg.log_dir)
+    method = cfg.method
+    if cfg.selfsup:
         method = f"{method}_self"
-    if opts.augplus:
+    if cfg.augplus:
         method = f"{method}_aug+"
 
-    run_name = (f"{method}_{opts.form}_{opts.dataset}_{opts.model}_"
-                f"{opts.optimizer}_bsz{opts.batch_size}_"
-                f"lr{opts.lr}_{opts.lr_decay}_t{opts.temp}_eps{opts.epsilon}_"
-                f"lr-eps{opts.lr_epsilon}_feat{opts.feat_dim}_"
-                f"{'identity_' if opts.train_on_head else 'head_'}"
-                f"alpha{opts.alpha}_beta{opts.beta}_lambda{opts.lambd}_kld{opts.kld}_" # remove {opts.dist}_
-                f"mlp_lr{opts.mlp_lr}_mlp_optimizer_{opts.mlp_optimizer}_"
-                f"trial{opts.trial}")
-    tb_dir = os.path.join(opts.log_dir, run_name)
-    opts.model_class = model.__class__.__name__
-    opts.criterion = infonce
-    opts.optimizer_class = optimizer.__class__.__name__
-    opts.scheduler = scheduler.__class__.__name__ if scheduler is not None else None
+    run_name = (f"{method}_{cfg.form}_{cfg.dataset}_{cfg.model}_"
+                f"{cfg.optimizer}_bsz{cfg.batch_size}_"
+                f"lr{cfg.lr}_{cfg.lr_decay}_t{cfg.temp}_eps{cfg.epsilon}_"
+                f"lr-eps{cfg.lr_epsilon}_feat{cfg.feat_dim}_"
+                f"{'identity_' if cfg.train_on_head else 'head_'}"
+                f"alpha{cfg.alpha}_beta{cfg.beta}_lambda{cfg.lambd}_kld{cfg.kld}_" # remove {cfg.dist}_
+                f"mlp_lr{cfg.mlp_lr}_mlp_optimizer_{cfg.mlp_optimizer}_"
+                f"trial{cfg.trial}")
+    tb_dir = os.path.join(cfg.log_dir, run_name)
+    cfg.model_class = model.__class__.__name__
+    cfg.criterion = infonce
+    cfg.optimizer_class = optimizer.__class__.__name__
+    cfg.scheduler = scheduler.__class__.__name__ if scheduler is not None else None
 
-    wandb.init(project="contrastive-learning-debiasing", config=opts, name=run_name, sync_tensorboard=True)
-    print('Config:', opts)
+    wandb.init(project="product-recognition", config=cfg, name=run_name, sync_tensorboard=True)
+    print('Config:', cfg)
     print('Model:', model)
     print('Criterion:', infonce)
     print('Optimizer:', optimizer)
@@ -556,39 +507,39 @@ if __name__ == '__main__':
     writer = torch.utils.tensorboard.writer.SummaryWriter(tb_dir)
     
     def target_loss(projected, labels):
-        if opts.selfsup:
-            return opts.alpha*infonce(projected)
-        return opts.alpha*infonce(projected, labels)
+        if cfg.selfsup:
+            return cfg.alpha*infonce(projected)
+        return cfg.alpha*infonce(projected, labels)
     criterion = lambda projected, feats, logits, labels, bias_labels: target_loss(projected, labels)
             
-    if opts.lambd != 0:
+    if cfg.lambd != 0:
         print("Applying regularization")
         
         def infonce_fairkl(projected, feats, logits, labels, bias_labels):
             feats = F.normalize(feats)
-            return opts.alpha * target_loss(projected, labels) + \
-                   opts.lambd * losses.fairkl(feats, labels, bias_labels, 1.0, kld=opts.kld)
+            return cfg.alpha * target_loss(projected, labels) + \
+                   cfg.lambd * losses.fairkl(feats, labels, bias_labels, 1.0, kld=cfg.kld)
         
         criterion = infonce_fairkl
 
-    scaler = torch.cuda.amp.GradScaler() if opts.amp else None
-    if opts.amp:
+    scaler = torch.cuda.amp.GradScaler() if cfg.amp else None
+    if cfg.amp:
         print("Using AMP")
     
-    output_dir = Path(opts.output_dir)
-    torch.save(opts, output_dir / "args.pyT")
+    output_dir = Path(cfg.output_dir)
+    torch.save(cfg, output_dir / "args.pyT")
     
     start_time = time.time()
     best_acc = 0.
-    for epoch in range(1, opts.epochs + 1):
+    for epoch in range(1, cfg.epochs + 1):
         t1 = time.time()
-        loss_train, accuracy_train, batch_time, data_time = train(train_loader, model, criterion, (optimizer, optimizer_fc), opts, epoch, scaler)
+        loss_train, accuracy_train, batch_time, data_time = train(train_loader, model, criterion, (optimizer, optimizer_fc), cfg, epoch, scaler)
         t2 = time.time()
 
         writer.add_scalar("train/lr", optimizer.param_groups[0]['lr'], epoch)
         writer.add_scalar("train/loss", loss_train, epoch)
         writer.add_scalar("train/acc@1", accuracy_train, epoch)
-        if "auto" in opts.method:
+        if "auto" in cfg.method:
             writer.add_scalar("train/epsilon", infonce.epsilon, epoch)
 
         writer.add_scalar("BT", batch_time, epoch)
@@ -599,23 +550,24 @@ if __name__ == '__main__':
         if scheduler is not None:
             scheduler.step()
         
-        if opts.output_dir:
+        if cfg.output_dir:
             checkpoint_paths = [output_dir / 'checkpoint.pth']
-            if opts.save_every is not None:
-                if epoch % opts.save_every == 0: checkpoint_paths.append(output_dir / 'checkpoint_{}.pth'.format(epoch))
+            if cfg.save_every is not None:
+                if epoch % cfg.save_every == 0: checkpoint_paths.append(output_dir / 'checkpoint_{}.pth'.format(epoch))
             for checkpoint_path in checkpoint_paths:
                 save_on_master({
                     'model': model.state_dict(),
                     'optimizer': optimizer.state_dict(),
                     'scheduler': scheduler.state_dict(),
                     'epoch': epoch,
-                    'opts': opts,
+                    'cfg': cfg,
                 }, checkpoint_path)
 
-        if (epoch % opts.test_freq == 0) or epoch == 1 or epoch == opts.epochs:
+        if not cfg.full_training and (epoch % cfg.test_freq == 0) or epoch == 1 or epoch == cfg.epochs:
             loss_test, accuracy_test, aligned_sim, conflicting_sim, \
             negative_aligned_sim, negative_conflicting_sim \
-                 = test(test_loader, model, criterion, opts)
+                 = test(test_loader, model, criterion, cfg)
+            
             writer.add_scalar("test/loss", loss_test, epoch)
             writer.add_scalar("test/acc@1", accuracy_test, epoch)
             print(f"test accuracy {accuracy_test:.2f}")
@@ -637,7 +589,9 @@ if __name__ == '__main__':
 
             if accuracy_test > best_acc:
                 best_acc = accuracy_test
+
+        if not cfg.full_training:
+            writer.add_scalar("best_acc@1", best_acc, epoch)
     
-        writer.add_scalar("best_acc@1", best_acc, epoch)
-    
-    print(f"best accuracy: {best_acc:.2f}")
+    if not cfg.full_training:
+        print(f"best accuracy: {best_acc:.2f}")
