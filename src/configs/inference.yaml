@@ -1,0 +1,7 @@
+program: infer.py
+data_dir: /home/khaled/workspace/projects/ucl/debiasing/data/
+camera_names: all
+model: resnet18
+model_weights: /home/khaled/workspace/projects/ucl/debiasing/weights/checkpoint_170.pth
+yolo_weights: /home/khaled/workspace/projects/ucl/debiasing/weights/DavidK0-YOLOv8-small.pt
+

@@ -2,6 +2,6 @@ __pycache__/
 wandb/
 logs/
 weights/
-temp.ipynb
-contrastive/
-assets/
+notebooks/
+data/*/images/
+data/*/labels/
