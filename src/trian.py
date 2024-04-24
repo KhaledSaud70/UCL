@@ -97,11 +97,11 @@ def load_data(cfg):
         ValueError(f"Can\'t build {cfg.dataset}")
 
     if cfg.dataset == 'danube':
-        mean = (0.5583, 0.4707, 0.4320)
-        std = (0.2333, 0.2389, 0.2386)
+        mean = (0.5525, 0.4640, 0.4124)
+        std = (0.2703, 0.2622, 0.2679)
 
     if cfg.dataset == 'danube':
-        resize_size = 224
+        resize_size = (224, 224)
         T_train = transforms.Compose([
             transforms.Resize(resize_size),
             transforms.RandomHorizontalFlip(),
@@ -143,7 +143,6 @@ def load_data(cfg):
         train_dataset = data.DanubeDataset(data_dir=cfg.data_dir, transform=T_train)
         cfg.n_classes = train_dataset.num_classes
         train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
-        print(cfg.n_classes)
 
         if cfg.test_percent > 0.0:
             test_dataset = data.DanubeDataset(data_dir=cfg.data_dir, transform=T_test)

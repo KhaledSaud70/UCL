@@ -60,7 +60,7 @@ def compute_mean_std(dataloader):
     # var[X] = E[X**2] - E[X]**2
     channels_sum, channels_sqrd_sum, num_batches = 0, 0, 0
 
-    for images, _ in tqdm(dataloader):  # (B,H,W,C)
+    for images, _ in tqdm(dataloader):  # (B,C,H,W)
         channels_sum += torch.mean(images, dim=[0, 2, 3])
         channels_sqrd_sum += torch.mean(images ** 2, dim=[0, 2, 3])
         num_batches += 1
@@ -80,13 +80,11 @@ if __name__ == '__main__':
     ])
 
     dataset = DanubeDataset(data_dir, transform=transform)
-    dataloader = DataLoader(dataset, batch_size=64, shuffle=False, pin_memory=True)
+    print(dataset.num_classes)
+    dataloader = DataLoader(dataset, batch_size=256, shuffle=False, pin_memory=True)
 
-    # Mean = tensor([0.5732, 0.4699, 0.4269]), Std = tensor([0.2731, 0.2662, 0.2697])
-    mean, std = compute_mean_std(dataloader)
-    print(f"Mean = {mean}, Std = {std}")
-
-
+    # mean, std = compute_mean_std(dataloader)
+    # print(f"Mean = {mean}, Std = {std}")
 
     # products_dir = os.path.join(data_dir, 'products')
     # os.makedirs(products_dir, exist_ok=True)
@@ -101,6 +99,3 @@ if __name__ == '__main__':
     #     image_pil.save(save_path)
 
     # print("Cropped images saved successfully.")
-
-
-    # the class of entery 1164 in camera_2/metadata changed from 68 to 32

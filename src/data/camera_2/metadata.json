@@ -287,7 +287,7 @@
   },
   {
     "name": "object",
-    "class": 73,
+    "class": 72,
     "confidence": 1.0,
     "box": {
       "x1": 233.33499999999998,
@@ -298,7 +298,7 @@
   },
   {
     "name": "object",
-    "class": 73,
+    "class": 72,
     "confidence": 1.0,
     "box": {
       "x1": 393.3299999999999,
@@ -309,7 +309,7 @@
   },
   {
     "name": "object",
-    "class": 73,
+    "class": 72,
     "confidence": 1.0,
     "box": {
       "x1": 516.67,
@@ -320,7 +320,7 @@
   },
   {
     "name": "object",
-    "class": 72,
+    "class": 71,
     "confidence": 1.0,
     "box": {
       "x1": 683.3349999999999,
@@ -331,7 +331,7 @@
   },
   {
     "name": "object",
-    "class": 72,
+    "class": 71,
     "confidence": 1.0,
     "box": {
       "x1": 790.0,
@@ -342,7 +342,7 @@
   },
   {
     "name": "object",
-    "class": 72,
+    "class": 71,
     "confidence": 1.0,
     "box": {
       "x1": 846.67,
@@ -1607,7 +1607,7 @@
   },
   {
     "name": "object",
-    "class": 71,
+    "class": 70,
     "confidence": 1.0,
     "box": {
       "x1": 3831.68,
@@ -1673,7 +1673,7 @@
   },
   {
     "name": "object",
-    "class": 69,
+    "class": 68,
     "confidence": 1.0,
     "box": {
       "x1": 3676.85,
@@ -1684,7 +1684,7 @@
   },
   {
     "name": "object",
-    "class": 69,
+    "class": 68,
     "confidence": 1.0,
     "box": {
       "x1": 3806.7599999999998,
@@ -1695,7 +1695,7 @@
   },
   {
     "name": "object",
-    "class": 70,
+    "class": 69,
     "confidence": 1.0,
     "box": {
       "x1": 3518.455,
