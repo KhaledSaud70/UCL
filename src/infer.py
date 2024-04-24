@@ -1,4 +1,4 @@
-import checkpoint as checkpoint
+from checkpoint import load_checkpoint
 from ultralytics import YOLO
 import models
 import torch
@@ -53,7 +53,7 @@ def setup_model(cfg):
         ValueError(f'Unsupported model name {cfg.model}')
     
     if cfg.model_weights:
-        checkpoint.load_checkpoint(cfg.model_weights, model)
+        load_checkpoint(cfg.model_weights, model)
 
 
     if cfg.device == 'cuda' and torch.cuda.device_count() > 1:
