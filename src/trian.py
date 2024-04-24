@@ -92,6 +92,7 @@ def parse_arguments():
 
     return cfg
 
+
 def load_data(cfg):
     if cfg.dataset != 'danube':
         ValueError(f"Can\'t build {cfg.dataset}")
@@ -171,6 +172,7 @@ def load_data(cfg):
 
     return train_loader
 
+
 def load_model(cfg):
     if 'resnet' in cfg.model:
         model = models.SupConResNet(cfg.model, feat_dim=cfg.feat_dim,
@@ -199,6 +201,7 @@ def load_model(cfg):
     criterion = criterion.to(cfg.device)
     
     return model, criterion
+
 
 def load_optimizer(model, criterion, cfg):
     if torch.cuda.device_count() > 1:
@@ -255,6 +258,7 @@ def load_optimizer(model, criterion, cfg):
 
     print((optimizer, scheduler), (optimizer_fc, scheduler_fc))
     return (optimizer, scheduler), (optimizer_fc, scheduler_fc)
+
 
 def train(train_loader, model, criterion, optimizers, cfg, epoch, scaler=None):
     loss = AverageMeter()
@@ -346,6 +350,7 @@ def train(train_loader, model, criterion, optimizers, cfg, epoch, scaler=None):
 
     return loss.avg, accuracy_train, batch_time.avg, data_time.avg
 
+
 def measure_similarity(feat, labels, bias_labels):
     bsz = feat.shape[0]
 
@@ -387,7 +392,8 @@ def measure_similarity(feat, labels, bias_labels):
            (conflicting_sim[torch.nonzero(pos_conflicting, as_tuple=True)], conflicting_sim_mean.mean()), \
            (negative_aligned_sim[torch.nonzero(neg_aligned, as_tuple=True)], negative_aligned_sim_mean.mean()), \
            (negative_conflicting_sim[torch.nonzero(neg_conflicting, as_tuple=True)], negative_conflicting_sim_mean.mean())
-           
+
+
 def test(test_loader, model, criterion, cfg):
     model.eval()
 
@@ -446,6 +452,7 @@ def test(test_loader, model, criterion, cfg):
            (conflicting_sim, conflicting_similarity.avg), \
            (negative_aligned_sim, negative_aligned_similarity.avg), \
            (negative_conflicting_sim, negative_conflicting_similarity.avg)
+       
         
 if __name__ == '__main__':
     cfg = parse_arguments()

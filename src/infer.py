@@ -32,6 +32,7 @@ def parse_arguments():
 
     return opts
 
+
 def build_transforms():
     # Mean and std should be computed offline
     mean = (0.5525, 0.4640, 0.4124)
@@ -75,12 +76,11 @@ def setup_model(cfg):
     
     return model
 
-def load_image(image_path):
-    return Image.open(image_path)
 
 def load_json(json_path):
     with open(json_path, 'r') as f:
         return json.load(f)
+
 
 def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_boxes, feat_index, model, transform):
     misplaced_products_position = {"misplacedProducts": []}
@@ -140,6 +140,7 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
 
         return misplaced_products_position
 
+
 def find_gaps(cfg, iou_mat, rf_boxes, metadata):
     mask = torch.any(iou_mat > cfg.iou_threshold, dim=0)
     indices = torch.nonzero(~mask)
@@ -159,6 +160,7 @@ def find_gaps(cfg, iou_mat, rf_boxes, metadata):
         gaps['gaps'].append(detected_gaps)
 
     return gaps
+
 
 def process_image(cfg, image, model, yolo_model, feat_index, rf_boxes, metadata, transform):
     image_res = yolo_model.predict(image, iou=0.5)
@@ -191,8 +193,6 @@ def process_image(cfg, image, model, yolo_model, feat_index, rf_boxes, metadata,
     results.update(gaps_position)
     return results
 
-def evaluate(cfg, ):
-    pass
 
 def inference(cfg, model, yolo_model, transform):
     if cfg.camera_names == 'all':
@@ -205,7 +205,7 @@ def inference(cfg, model, yolo_model, transform):
 
     for camera_name in cfg.camera_names[:1]:
         camera_dir = os.path.join(cfg.data_dir, camera_name)
-        rf_image = load_image(os.path.join(camera_dir, 'reference.jpg')) # Ensure consistent refernce image names for all cameras
+        rf_image = Image.open(os.path.join(camera_dir, 'reference.jpg')) # Ensure consistent refernce image names for all cameras
         metadata = load_json(os.path.join(camera_dir, 'metadata.json')) # Ensure consistent metadata file name for all cameras
 
         boxes = [[entery['box']['x1'], entery['box']['y1'], entery['box']['x2'], entery['box']['y2']] for entery in metadata]
@@ -232,7 +232,7 @@ def inference(cfg, model, yolo_model, transform):
         for image_file in os.listdir(images_dir):
             if image_file.endswith('.jpg'):
                 image_path = os.path.join(images_dir, image_file)
-                image = load_image(image_path)
+                image = Image.open(image_path)
 
                 results = process_image(cfg, image, model, yolo_model, feat_index, rf_boxes, metadata, transform)
                 results['image_file'] = image_file
@@ -243,6 +243,7 @@ def inference(cfg, model, yolo_model, transform):
     with open(json_path, 'w') as json_file:
             json.dump(results_per_camera, json_file, indent=2)
 
+
 def main():
     cfg = parse_arguments()
 
@@ -251,12 +252,6 @@ def main():
     yolo_model = YOLO(cfg.yolo_weights)
 
     result = inference(cfg, model, yolo_model, transform=build_transforms())
-
-    # if cfg.eval:
-    #     result_metrics = evaluate(cfg)
-
-
-
 
 
 if __name__ == '__main__':

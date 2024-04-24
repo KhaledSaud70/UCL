@@ -22,6 +22,7 @@ def arg2bool(val):
     assert val == 0 or val == 1
     return val == 1
 
+
 class NViewTransform:
     """Create N augmented views of the same image"""
     def __init__(self, transform, N):
@@ -30,6 +31,7 @@ class NViewTransform:
 
     def __call__(self, x):
         return [self.transform(x) for _ in range(self.N)]
+
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -54,6 +56,7 @@ def ensure_dir(dirname):
     if not dirname.is_dir():
         dirname.mkdir(parents=True, exist_ok=True)
 
+
 def accuracy(output, target, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
     with torch.no_grad():
@@ -69,6 +72,7 @@ def accuracy(output, target, topk=(1,)):
             correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
             res.append(correct_k.mul_(100.0 / batch_size).item())
         return res
+
 
 def set_seed(seed):
     random.seed(seed)
@@ -90,9 +94,11 @@ def warmup_learning_rate(args, epoch, batch_id, total_batches, optimizer):
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
 
+
 class pretty_dict(dict):                                              
     def __str__(self):
         return str({k: round(v, 3) if isinstance(v,float) else v for k, v in self.items()})
+    
     
 def is_dist_avail_and_initialized():
     if not dist.is_available():

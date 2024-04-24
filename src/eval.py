@@ -10,7 +10,7 @@ import matplotlib.patches as patches
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="SMS Inference",
+    parser = argparse.ArgumentParser(description="SMS Evaluate",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--data_dir', type=str, help='path of data dir', required=True, default='/data')
@@ -22,12 +22,11 @@ def parse_arguments():
 
     return opts
 
-def load_image(image_path):
-    return Image.open(image_path)
 
 def load_json(json_path):
     with open(json_path, 'r') as f:
         return json.load(f)
+
 
 def calculate_metrics(ground_truth_boxes, detected_boxes, iou_threshold=0.15):
     iou_matrix = box_iou(detected_boxes, ground_truth_boxes)
@@ -62,7 +61,6 @@ def evaluate(cfg):
         camera_dir = os.path.join(cfg.data_dir, camera_name)
         inference_data = inference_metadata[camera_name]
         labels_dir = os.path.join(camera_dir, 'labels')
-        # images_dir = os.path.join(camera_dir, 'images')
 
         metrics_sum = {'precision': 0, 'recall': 0, 'f1': 0}
         processed_images = 0
@@ -77,7 +75,6 @@ def evaluate(cfg):
             
             processed_images += 1
 
-            # image = load_image(os.path.join(images_dir, label_file_name + '.jpg'))
             detected_boxes = [list(d['detectedObject']['boundingBox'].values()) for d in infer_data['misplacedProducts']]
             detected_boxes = torch.tensor(detected_boxes)
             label_boxes = torch.stack([torch.tensor(list(entry["box"].values())) for entry in labels_data])
@@ -102,11 +99,9 @@ def evaluate(cfg):
         json.dump(results, json_file, indent=4)
 
 
-
 def main():
     cfg = parse_arguments()
     evaluate(cfg)
-
 
 
 if __name__ == '__main__':

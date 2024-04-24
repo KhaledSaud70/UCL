@@ -56,6 +56,7 @@ class DanubeDataset(Dataset):
     def num_classes(self):
         return len(self.classes)
 
+
 def compute_mean_std(dataloader):
     # var[X] = E[X**2] - E[X]**2
     channels_sum, channels_sqrd_sum, num_batches = 0, 0, 0
