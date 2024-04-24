@@ -34,7 +34,7 @@ def parse_arguments():
     parser.add_argument('--dataset', type=str, help='dataset (format name_attr e.g. biased-mnist_0.999)', required=True)
     parser.add_argument('--batch_size', type=int, help='batch size', default=256)
     parser.add_argument('--test_percent', type=float, help='percentage of data to be used for testing', default=0.1)
-    parser.add_argument('--full_training', action='store_true', help='Perform training on full data only (no testing)')
+    parser.add_argument('--full_training', help='Perform training on full data only (no testing)', default=False)
 
     parser.add_argument('--epochs', type=int, help='number of epochs', default=100)
     parser.add_argument('--lr', type=float, help='learning rate', default=0.01)
@@ -101,11 +101,9 @@ def load_data(cfg):
         std = (0.2333, 0.2389, 0.2386)
 
     if cfg.dataset == 'danube':
-        resize_size = 256
-        crop_size = 224
+        resize_size = 224
         T_train = transforms.Compose([
             transforms.Resize(resize_size),
-            transforms.RandomResizedCrop(crop_size),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
@@ -124,7 +122,6 @@ def load_data(cfg):
                     
         T_test = transforms.Compose([
             transforms.Resize(resize_size),
-            transforms.CenterCrop(crop_size),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
@@ -143,11 +140,13 @@ def load_data(cfg):
         if cfg.full_training:
             cfg.test_percent = 0.0
 
-        train_dataset = data.DanubeDataset(root=cfg.data_dir, transform=T_train)
+        train_dataset = data.DanubeDataset(data_dir=cfg.data_dir, transform=T_train)
+        cfg.n_classes = train_dataset.num_classes
         train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
+        print(cfg.n_classes)
 
         if cfg.test_percent > 0.0:
-            test_dataset = data.DanubeDataset(root=cfg.data_dir, transform=T_test)
+            test_dataset = data.DanubeDataset(data_dir=cfg.data_dir, transform=T_test)
             test_dataset = data.MapDataset(test_dataset, lambda x, y: (x, y, 0))
 
             data_size = len(train_dataset)
@@ -158,11 +157,10 @@ def load_data(cfg):
 
             train_dataset = torch.utils.data.Subset(train_dataset, train_idx)
             test_dataset = torch.utils.data.Subset(test_dataset, valid_idx)
-
-        cfg.n_classes = train_dataset.num_classes
+            print(len(test_dataset), 'test images')     
 
         print(len(train_dataset), 'training images')
-        print(len(test_dataset), 'test images')
+        
     
     
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.batch_size, shuffle=True,

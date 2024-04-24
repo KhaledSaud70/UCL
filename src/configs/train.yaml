@@ -1,9 +1,10 @@
-program: train.py
+program: trian.py
 batch_size: 256
 data_dir: data/
 output_dir: ./weights
 save_every: 10
 dataset: danube
+test_percent: 0.05
 epochs: 80
 epsilon: 0
 lr: 0.001
