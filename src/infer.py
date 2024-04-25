@@ -206,7 +206,7 @@ def inference(cfg, model, yolo_model, transform):
     results_per_camera = OrderedDict({camera_name: [] for camera_name in cfg.camera_names})
 
 
-    for camera_name in cfg.camera_names[:1]:
+    for camera_name in cfg.camera_names:
         camera_dir = os.path.join(cfg.data_dir, camera_name)
         rf_image = Image.open(os.path.join(camera_dir, 'reference.jpg')) # Ensure consistent refernce image names for all cameras
         metadata = load_json(os.path.join(camera_dir, 'metadata.json')) # Ensure consistent metadata file name for all cameras
@@ -232,7 +232,7 @@ def inference(cfg, model, yolo_model, transform):
         #     feat_index = faiss.read_index(feat_index_path)
 
         images_dir = os.path.join(camera_dir, 'images')
-        for image_file in os.listdir(images_dir)[:1]:
+        for image_file in os.listdir(images_dir):
             if image_file.endswith('.jpg'):
                 image_path = os.path.join(images_dir, image_file)
                 image = Image.open(image_path)
