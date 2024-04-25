@@ -102,9 +102,11 @@ def load_data(cfg):
         std = (0.2703, 0.2622, 0.2679)
 
     if cfg.dataset == 'danube':
-        resize_size = (224, 224)
+        resize_size = 256
+        crop_size = 224
         T_train = transforms.Compose([
             transforms.Resize(resize_size),
+            transforms.RandomResizedCrop(crop_size),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
@@ -123,6 +125,7 @@ def load_data(cfg):
                     
         T_test = transforms.Compose([
             transforms.Resize(resize_size),
+            transforms.CenterCrop(crop_size),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])

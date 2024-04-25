@@ -25,7 +25,9 @@ def parse_arguments():
     parser.add_argument('--feat_dim', type=int, help='size of projection head', default=128)
     parser.add_argument('--model_weights', type=str, help='path to model weights')
     parser.add_argument('--yolo_weights', type=str, help='path to YOLO weights')
-    parser.add_argument('--iou_threshold', type=int, help='IoU threshold between refernce box and query box. IoU less than this value will make the query box as a gap', default=0.15)
+    parser.add_argument('--iou',
+                        type=int,
+                        help='Intersection Over Union (IoU) threshold between the reference and detected boxes. Objects detected with IoU below this threshold will be considered as a gap', default=0.15)
     parser.add_argument('--k_max', type=int, help='Maximum number of nearest neighbors to consider during product feature matching', default=3)
 
     opts = parser.parse_args()
@@ -106,7 +108,7 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
                 for box_idx, box in enumerate(rf_boxes):
                     box = box.view(1, 4)
                     iou = box_iou(top_box.cpu(), box.cpu()).item()
-                    if iou >= cfg.iou_threshold:
+                    if iou >= cfg.iou:
                         topk_products.append({
                             "boundingBox": box,
                             "class": metadata[box_idx]["class"],
@@ -143,7 +145,7 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
 
 
 def find_gaps(cfg, iou_mat, rf_boxes, metadata):
-    mask = torch.any(iou_mat > cfg.iou_threshold, dim=0)
+    mask = torch.any(iou_mat > cfg.iou, dim=0)
     indices = torch.nonzero(~mask)
 
     gaps = {"gaps": []}
@@ -168,7 +170,7 @@ def process_image(cfg, image, model, yolo_model, feat_index, rf_boxes, metadata,
     detected_boxes = image_res[0].boxes.xyxy
 
     iou_mat = box_iou(detected_boxes, rf_boxes)
-    indices = torch.nonzero(iou_mat >= cfg.iou_threshold)
+    indices = torch.nonzero(iou_mat >= cfg.iou)
 
     # Find unique indices with maximum IoU for each detected box
     unique_indices = {}
@@ -204,13 +206,13 @@ def inference(cfg, model, yolo_model, transform):
     results_per_camera = OrderedDict({camera_name: [] for camera_name in cfg.camera_names})
 
 
-    for camera_name in cfg.camera_names[:1]:
+    for camera_name in cfg.camera_names:
         camera_dir = os.path.join(cfg.data_dir, camera_name)
         rf_image = Image.open(os.path.join(camera_dir, 'reference.jpg')) # Ensure consistent refernce image names for all cameras
         metadata = load_json(os.path.join(camera_dir, 'metadata.json')) # Ensure consistent metadata file name for all cameras
 
         boxes = [[entery['box']['x1'], entery['box']['y1'], entery['box']['x2'], entery['box']['y2']] for entery in metadata]
-        rf_boxes = torch.tensor(boxes)
+        rf_boxes = torch.tensor(boxes, device=cfg.device)
 
         feat_index_path = os.path.join(camera_dir, 'features_index.index')
         if not os.path.exists(feat_index_path):
