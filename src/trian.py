@@ -452,8 +452,8 @@ def test(test_loader, model, criterion, cfg):
            (conflicting_sim, conflicting_similarity.avg), \
            (negative_aligned_sim, negative_aligned_similarity.avg), \
            (negative_conflicting_sim, negative_conflicting_similarity.avg)
-       
-        
+
+
 if __name__ == '__main__':
     cfg = parse_arguments()
     set_seed(cfg.trial)
@@ -567,7 +567,7 @@ if __name__ == '__main__':
                     'cfg': cfg,
                 }, checkpoint_path)
 
-        if not cfg.full_training and (epoch % cfg.test_freq == 0) or epoch == 1 or epoch == cfg.epochs:
+        if not cfg.full_training and ((epoch % cfg.test_freq == 0) or epoch == 1 or epoch == cfg.epochs):
             loss_test, accuracy_test, aligned_sim, conflicting_sim, \
             negative_aligned_sim, negative_conflicting_sim \
                  = test(test_loader, model, criterion, cfg)

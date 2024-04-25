@@ -23,7 +23,7 @@ class SupConResNet(nn.Module):
         feat_dim = min(dim_in, feat_dim)
         self.feat_dim = feat_dim
         
-        self.encoder = model_fun()
+        self.encoder = model_fun(weights='DEFAULT')
 
         if hasattr(self.encoder, 'fc'):
             self.encoder.fc = nn.Identity()

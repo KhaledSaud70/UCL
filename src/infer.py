@@ -74,7 +74,7 @@ def setup_model(cfg):
     cfg.feat_dim = potential_last_layer.in_features
     model = torch.nn.Sequential(*list(model.children())[:-1])
     
-    return model
+    return model.to(cfg.device)
 
 
 def load_json(json_path):
@@ -94,7 +94,8 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
             k = min(num_samples_in_class, cfg.k_max) if num_samples_in_class > 0 else 1
 
             q_img = image.crop(tuple(q_box.tolist()))
-            q_feat = model(transform(q_img).unsqueeze(0)).detach().cpu()
+            q_img = transform(q_img).unsqueeze(0).to(cfg.device)
+            q_feat = model(q_img).detach().cpu()
             q_feat = F.normalize(q_feat, dim=1).squeeze().unsqueeze(0)
             topk_score, topk_idxs = feat_index.search(q_feat.numpy(), k)
 
