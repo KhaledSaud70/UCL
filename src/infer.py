@@ -206,7 +206,7 @@ def inference(cfg, model, yolo_model, transform):
     results_per_camera = OrderedDict({camera_name: [] for camera_name in cfg.camera_names})
 
 
-    for camera_name in cfg.camera_names:
+    for camera_name in cfg.camera_names[:1]:
         camera_dir = os.path.join(cfg.data_dir, camera_name)
         rf_image = Image.open(os.path.join(camera_dir, 'reference.jpg')) # Ensure consistent refernce image names for all cameras
         metadata = load_json(os.path.join(camera_dir, 'metadata.json')) # Ensure consistent metadata file name for all cameras
@@ -215,24 +215,24 @@ def inference(cfg, model, yolo_model, transform):
         rf_boxes = torch.tensor(boxes, device=cfg.device)
 
         feat_index_path = os.path.join(camera_dir, 'features_index.index')
-        if not os.path.exists(feat_index_path):
-            feat_index = faiss.IndexFlatIP(cfg.feat_dim)
+        # if not os.path.exists(feat_index_path):
+        feat_index = faiss.IndexFlatIP(cfg.feat_dim)
 
-            features = torch.empty(len(rf_boxes), cfg.feat_dim, dtype=torch.float32)
-            with torch.no_grad():
-                for i, box in enumerate(rf_boxes):
-                    img = rf_image.crop(tuple(box.tolist()))
-                    feat = model(transform(img).unsqueeze(0)).squeeze().detach().cpu()
-                    features[i] = feat
+        features = torch.empty(len(rf_boxes), cfg.feat_dim, dtype=torch.float32)
+        with torch.no_grad():
+            for i, box in enumerate(rf_boxes):
+                img = rf_image.crop(tuple(box.tolist()))
+                feat = model(transform(img).unsqueeze(0)).squeeze().detach().cpu()
+                features[i] = feat
 
-            features = F.normalize(features)
-            feat_index.add(features.numpy())
-            faiss.write_index(feat_index, feat_index_path)
-        else:
-            feat_index = faiss.read_index(feat_index_path)
+        features = F.normalize(features)
+        feat_index.add(features.numpy())
+        faiss.write_index(feat_index, feat_index_path)
+        # else:
+        #     feat_index = faiss.read_index(feat_index_path)
 
         images_dir = os.path.join(camera_dir, 'images')
-        for image_file in os.listdir(images_dir):
+        for image_file in os.listdir(images_dir)[:1]:
             if image_file.endswith('.jpg'):
                 image_path = os.path.join(images_dir, image_file)
                 image = Image.open(image_path)
