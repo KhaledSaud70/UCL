@@ -1,1 +1,1 @@
-from models.resnet import SupConResNet, CEResNet
+from models.resnet import SupConResNet

@@ -39,10 +39,12 @@ def build_transforms():
     # Mean and std should be computed offline
     mean = (0.5525, 0.4640, 0.4124)
     std = (0.2703, 0.2622, 0.2679)
-    resize_size = (224, 224)
+    resize_size = 256
+    crop_size = 224
 
     return transforms.Compose([
         transforms.Resize(resize_size),
+        transforms.CenterCrop(crop_size),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
     ])
@@ -242,7 +244,7 @@ def inference(cfg, model, yolo_model, transform):
                 results_per_camera[camera_name].append(results)
         
     
-    json_path = os.path.join(cfg.data_dir, 'inference.json')
+    json_path = os.path.join(cfg.data_dir, 'inference1.json')
     with open(json_path, 'w') as json_file:
             json.dump(results_per_camera, json_file, indent=2)
     

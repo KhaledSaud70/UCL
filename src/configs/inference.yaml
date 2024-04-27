@@ -2,5 +2,5 @@ program: infer.py
 data_dir: data/
 camera_names: all # list of camera names or 'all'
 model: resnet18
-model_weights: weights/checkpoint_170.pth
+model_weights: weights/checkpoint_100.pth
 yolo_weights: weights/DavidK0-YOLOv8-small.pt
