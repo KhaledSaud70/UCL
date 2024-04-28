@@ -4,6 +4,9 @@ scikit_learn==1.3.0
 torch==2.2.2
 torchvision==0.17.2
 wandb==0.12.16
-faiss-gpu==1.8.0
+faiss-gpu==1.7.2
 ultralytics==8.2.2
-matplotlib-base==3.8.4
+matplotlib==3.8.4
+tensorboard==2.16.2
+transformers
+timm

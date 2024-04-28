@@ -1,5 +1,7 @@
 __pycache__/
 wandb/
 logs/
-weights/
 notebooks/
+models/resnet.py
+models/efficientnet.py
+models/clip.py
