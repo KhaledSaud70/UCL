@@ -1,4 +1,3 @@
-from checkpoint import load_checkpoint
 from ultralytics import YOLO
 import models
 import torch
