@@ -19,6 +19,7 @@ from torchvision import transforms
 from util import AverageMeter, NViewTransform, accuracy, ensure_dir, set_seed, arg2bool, warmup_learning_rate, save_on_master
 from lars import LARS
 
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Product Recognition Training",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -29,6 +30,8 @@ def parse_arguments():
     parser.add_argument('--log_dir', type=str, help='tensorboard log dir', default='logs')
     parser.add_argument('--output_dir', default='', help='path where to save, empty for no saving')
     parser.add_argument('--save_every', default=None, type=int, help='save model every epochs')
+    parser.add_argument('--num_workers', default=8, type=int)
+
 
     parser.add_argument('--data_dir', type=str, help='path of data dir', required=True, default='/data')
     parser.add_argument('--dataset', type=str, help='dataset (format name_attr e.g. biased-mnist_0.999)', required=True)
@@ -45,7 +48,9 @@ def parse_arguments():
     parser.add_argument('--momentum', type=float, help='momentum', default=0.9)
     parser.add_argument('--weight_decay', type=float, help='weight decay', default=1e-4)
 
-    parser.add_argument('--model', type=str, help='model architecture')
+    parser.add_argument('--backbone', type=str, help='model architecture')
+    parser.add_argument('--checkpoint', type=str, default=None, help='Path to the checkpoint file')
+
 
     parser.add_argument('--method', type=str, help='loss function', choices=['infonce', 'infonce-strong'], default='infonce')
     parser.add_argument('--n_views', type=int, help='number of different views', default=1)
@@ -66,7 +71,7 @@ def parse_arguments():
 
     parser.add_argument('--beta', type=float, help='cross-entropy weight WITH supcon', default=0)
     
-    parser.add_argument('--feat_dim', type=int, help='size of projection head', default=128)
+    parser.add_argument('--features_dim', type=int, help='size of projection head', default=128)
     parser.add_argument('--mlp_lr', type=float, help='mlp lr', default=0.001)
     parser.add_argument('--mlp_lr_decay', type=str, help='mlp lr decay', default='constant')
     parser.add_argument('--mlp_max_iter', type=int, help='mlp training epochs', default=500)
@@ -93,7 +98,7 @@ def parse_arguments():
     return cfg
 
 
-def load_data(cfg):
+def build_data(cfg):
     if cfg.dataset != 'danube':
         ValueError(f"Can\'t build {cfg.dataset}")
 
@@ -102,11 +107,9 @@ def load_data(cfg):
         std = (0.2703, 0.2622, 0.2679)
 
     if cfg.dataset == 'danube':
-        resize_size = 256
-        crop_size = 224
+        resize_size = (224, 224)
         T_train = transforms.Compose([
             transforms.Resize(resize_size),
-            transforms.RandomResizedCrop(crop_size),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
@@ -125,7 +128,6 @@ def load_data(cfg):
                     
         T_test = transforms.Compose([
             transforms.Resize(resize_size),
-            transforms.CenterCrop(crop_size),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
@@ -145,7 +147,7 @@ def load_data(cfg):
             cfg.test_percent = 0.0
 
         train_dataset = data.DanubeDataset(data_dir=cfg.data_dir, transform=T_train)
-        cfg.n_classes = train_dataset.num_classes
+        cfg.num_classes = train_dataset.num_classes
         train_dataset = data.MapDataset(train_dataset, lambda x, y: (x, y, 0))
 
         if cfg.test_percent > 0.0:
@@ -167,25 +169,21 @@ def load_data(cfg):
     
     
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.batch_size, shuffle=True,
-                                               num_workers=8, persistent_workers=True)
+                                               num_workers=cfg.num_workers, persistent_workers=True)
     if not cfg.full_training:
-        test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=256, shuffle=False, num_workers=8, 
+        test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=cfg.batch_size, shuffle=False, num_workers=cfg.num_workers, 
                                                   persistent_workers=True)
         return train_loader, test_loader
 
     return train_loader
 
 
-def load_model(cfg):
-    if 'resnet' in cfg.model:
-        model = models.SupConResNet(cfg.model,
-                                    num_classes=cfg.n_classes,
-                                    trainable_layers=['layer3', 'layer4', 'fc'])
-        
-    else:
-        ValueError(f'Unsupported model name {cfg.model}')
+def build_model(cfg):
+    model = models.SupConModel(cfg.backbone, num_classes=cfg.num_classes)
+    if cfg.checkpoint:
+        model.load_checkpoint(cfg.checkpoint)
 
-    cfg.feat_dim = model.feat_dim
+    cfg.features_dim = model.features_dim
 
     if cfg.device == 'cuda' and torch.cuda.device_count() > 1:
         print(f"Using multiple CUDA devices ({torch.cuda.device_count()})")
@@ -206,13 +204,11 @@ def load_model(cfg):
     return model, criterion
 
 
-def load_optimizer(model, criterion, cfg):
+def build_optimizer(model, criterion, cfg):
     if torch.cuda.device_count() > 1:
-        parameters = [{'params': model.module.encoder.parameters()},
-                    {'params': model.module.head.parameters()}]
+        parameters = [{'params': model.module.encoder.parameters()}]
     else:
-        parameters = [{'params': model.encoder.parameters()},
-                    {'params': model.head.parameters()}]
+        parameters = [{'params': model.encoder.parameters()}]
 
     if cfg.beta > 0:
         parameters = model.parameters()
@@ -459,15 +455,18 @@ def test(test_loader, model, criterion, cfg):
 
 if __name__ == '__main__':
     cfg = parse_arguments()
+    if cfg.output_dir:
+        Path(cfg.output_dir).mkdir(parents=True, exist_ok=True)
+
     set_seed(cfg.trial)
 
     if cfg.full_training:
-        train_loader = load_data(cfg)
+        train_loader = build_data(cfg)
     else:
-        train_loader, test_loader = load_data(cfg)
+        train_loader, test_loader = build_data(cfg)
 
-    model, infonce = load_model(cfg)
-    (optimizer, scheduler), (optimizer_fc, scheduler_fc) = load_optimizer(model, infonce, cfg)
+    model, infonce = build_model(cfg)
+    (optimizer, scheduler), (optimizer_fc, scheduler_fc) = build_optimizer(model, infonce, cfg)
     
     if cfg.batch_size > 256:
         cfg.warm = True
@@ -475,7 +474,7 @@ if __name__ == '__main__':
     if cfg.warm:
         cfg.warm_epochs = 10
         cfg.warmup_from = 0.01
-        cfg.model = f"{cfg.model}_warm"
+        cfg.backbone = f"{cfg.backbone}_warm"
         
         if cfg.lr_decay == 'cosine':
             eta_min = cfg.lr * (0.1 ** 3)
@@ -490,21 +489,21 @@ if __name__ == '__main__':
     if cfg.augplus:
         method = f"{method}_aug+"
 
-    run_name = (f"{method}_{cfg.form}_{cfg.dataset}_{cfg.model}_"
+    run_name = (f"{method}_{cfg.form}_{cfg.dataset}_{cfg.backbone}_"
                 f"{cfg.optimizer}_bsz{cfg.batch_size}_"
                 f"lr{cfg.lr}_{cfg.lr_decay}_t{cfg.temp}_eps{cfg.epsilon}_"
-                f"lr-eps{cfg.lr_epsilon}_feat{cfg.feat_dim}_"
+                f"lr-eps{cfg.lr_epsilon}_feat{cfg.features_dim}_"
                 f"{'identity_' if cfg.train_on_head else 'head_'}"
                 f"alpha{cfg.alpha}_beta{cfg.beta}_lambda{cfg.lambd}_kld{cfg.kld}_" # remove {cfg.dist}_
                 f"mlp_lr{cfg.mlp_lr}_mlp_optimizer_{cfg.mlp_optimizer}_"
                 f"trial{cfg.trial}")
     tb_dir = os.path.join(cfg.log_dir, run_name)
-    cfg.model_class = model.__class__.__name__
+    cfg.backbone_class = model.__class__.__name__
     cfg.criterion = infonce
     cfg.optimizer_class = optimizer.__class__.__name__
     cfg.scheduler = scheduler.__class__.__name__ if scheduler is not None else None
 
-    wandb.init(project="product-recognition", config=cfg, name=run_name, sync_tensorboard=True)
+    # wandb.init(project="product-recognition", config=cfg, name=run_name, sync_tensorboard=True)
     print('Config:', cfg)
     print('Model:', model)
     print('Criterion:', infonce)

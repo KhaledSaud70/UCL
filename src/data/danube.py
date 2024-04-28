@@ -11,7 +11,7 @@ class DanubeDataset(Dataset):
     def __init__(self, data_dir, transform=None):
         self.data_dir = data_dir
         self.transform = transform
-        self.classes = set() 
+        self.id_to_class = {}
         self.metadata = []
         self._load_data()
 
@@ -28,7 +28,8 @@ class DanubeDataset(Dataset):
 
                 for entry in metadata:
                     entry['camera'] = camera
-                    self.classes.add(entry['class'])
+                    if entry['id'] not in self.id_to_class:
+                        self.id_to_class[entry['id']] = len(self.id_to_class)
                     entry['image_path'] = reference_image_path
                     self.metadata.append(entry)
 
@@ -39,14 +40,14 @@ class DanubeDataset(Dataset):
     
     def __getitem__(self, idx):
         entry = self.metadata[idx]
-        # print(entry)
         image_path = entry['image_path']
         x1, x2, y1, y2 = entry['box']['x1'], entry['box']['x2'], entry['box']['y1'], entry['box']['y2']
         
         image = Image.open(image_path).convert('RGB').crop((x1, y1, x2, y2))
         image = self._apply_transform(image)
         
-        item_class = entry['class']
+        item_id = entry['id']
+        item_class = self.id_to_class[item_id]
         return image, item_class
 
     def __len__(self):
@@ -54,7 +55,7 @@ class DanubeDataset(Dataset):
 
     @property
     def num_classes(self):
-        return len(self.classes)
+        return len(self.id_to_class)
 
 
 def compute_mean_std(dataloader):
@@ -73,8 +74,7 @@ def compute_mean_std(dataloader):
 
 
 if __name__ == '__main__':
-    data_dir = f'/home/{os.environ.get("USER")}/workspace/projects/shlef-monitoring/src/data'
-
+    data_dir = f'/home/{os.environ.get("USER")}/workspace/projects/shelf-monitoring/src/data'
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor()

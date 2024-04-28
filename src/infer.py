@@ -21,9 +21,9 @@ def parse_arguments():
     parser.add_argument('--data_dir', type=str, help='path of data dir', required=True, default='/data')
     parser.add_argument('--camera_names', type=str, help='camera directory names', default='all')
     parser.add_argument('--device', type=str, help='torch device', default='cuda')
-    parser.add_argument('--model', type=str, help='model architecture')
-    parser.add_argument('--feat_dim', type=int, help='size of projection head', default=128)
-    parser.add_argument('--model_weights', type=str, help='path to model weights')
+    parser.add_argument('--backbone', type=str, help='model architecture')
+    parser.add_argument('--features_dim', type=int, help='size of projection head', default=128)
+    parser.add_argument('--checkpoint', type=str, help='path to model weights')
     parser.add_argument('--yolo_weights', type=str, help='path to YOLO weights')
     parser.add_argument('--iou',
                         type=int,
@@ -39,26 +39,21 @@ def build_transforms():
     # Mean and std should be computed offline
     mean = (0.5525, 0.4640, 0.4124)
     std = (0.2703, 0.2622, 0.2679)
-    resize_size = 256
-    crop_size = 224
+    resize_size = (224, 224)
 
     return transforms.Compose([
         transforms.Resize(resize_size),
-        transforms.CenterCrop(crop_size),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
     ])
 
 
-def setup_model(cfg):
-    if 'resnet' in cfg.model:
-        model = models.SupConResNet(cfg.model)
-
-    else:
-        ValueError(f'Unsupported model name {cfg.model}')
+def build_model(cfg):
+    model = models.SupConModel(cfg.backbone, num_classes=0)
+    cfg.features_dim = model.features_dim
     
-    if cfg.model_weights:
-        load_checkpoint(cfg.model_weights, model)
+    if cfg.checkpoint:
+        model.load_checkpoint(cfg.checkpoint)
 
 
     if cfg.device == 'cuda' and torch.cuda.device_count() > 1:
@@ -66,19 +61,7 @@ def setup_model(cfg):
         model = torch.nn.DataParallel(model)
     model = model.to(cfg.device)
     
-    layers = torch.nn.Sequential(*list(model.children()))
-
-    try:
-        potential_last_layer = layers[-1]
-        while not isinstance(potential_last_layer, nn.Linear):
-            potential_last_layer = potential_last_layer[-1]
-    except TypeError:
-        raise TypeError('Can\'t find the linear layer of the model')
-    
-    cfg.feat_dim = potential_last_layer.in_features
-    model = torch.nn.Sequential(*list(model.children())[:-1])
-    
-    return model.to(cfg.device)
+    return model.encoder
 
 
 def load_json(json_path):
@@ -91,10 +74,10 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
     with torch.no_grad():
         for q_idx, rf_idx in indices:
             q_box = detected_boxes[q_idx]
-            rf_class = metadata[rf_idx]['class']
+            rf_id = metadata[rf_idx]["id"]
 
              # Determine the value of k based on the number of samples in the current class
-            num_samples_in_class = sum(1 for entery in metadata if entery['class'] == rf_class)
+            num_samples_in_class = sum(1 for entery in metadata if entery["id"] == rf_id)
             k = min(num_samples_in_class, cfg.k_max) if num_samples_in_class > 0 else 1
 
             q_img = image.crop(tuple(q_box.tolist()))
@@ -113,18 +96,16 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
                     if iou >= cfg.iou:
                         topk_products.append({
                             "boundingBox": box,
-                            "class": metadata[box_idx]["class"],
-                            "name": metadata[box_idx]["name"]
+                            "id": metadata[box_idx]["id"],
                         })
 
-            topk_classes = [product["class"] for product in topk_products]
-            if rf_class not in topk_classes:
+            topk_ids = [product["id"] for product in topk_products]
+            if rf_id not in topk_ids:
                 q_box = q_box.tolist()
                 detected_product = {
-                    "positionProductId": rf_class,
-                    "positionProductName": metadata[rf_idx]['name'],
+                    "positionProductId": rf_id,
                     "detectedObject": {
-                        "id": topk_classes[topk_score.argmax()],
+                        "id": topk_ids[topk_score.argmax()],
                         "boundingBox": {
                             "x1": q_box[0],
                             "y1": q_box[1],
@@ -134,7 +115,6 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
                         "classifications": [
                             {
                                 "confidence": float(topk_score.max()),
-                                "name": topk_products[topk_score.argmax()]["name"]
                                 
                             }
                         ]
@@ -154,7 +134,7 @@ def find_gaps(cfg, iou_mat, rf_boxes, metadata):
     for idx in indices:
         box = rf_boxes[idx.item()].tolist()
         detected_gaps = {
-            "id": metadata[idx]["class"],
+            "id": metadata[idx]["id"],
             "boundingBox": {
                 "x1": box[0],
                 "x2": box[1],
@@ -216,11 +196,9 @@ def inference(cfg, model, yolo_model, transform):
         boxes = [[entery['box']['x1'], entery['box']['y1'], entery['box']['x2'], entery['box']['y2']] for entery in metadata]
         rf_boxes = torch.tensor(boxes, device=cfg.device)
 
-        feat_index_path = os.path.join(camera_dir, 'features_index.index')
-        # if not os.path.exists(feat_index_path):
-        feat_index = faiss.IndexFlatIP(cfg.feat_dim)
+        feat_index = faiss.IndexFlatIP(cfg.features_dim)
 
-        features = torch.empty(len(rf_boxes), cfg.feat_dim, dtype=torch.float32)
+        features = torch.empty(len(rf_boxes), cfg.features_dim, dtype=torch.float32)
         with torch.no_grad():
             for i, box in enumerate(rf_boxes):
                 img = rf_image.crop(tuple(box.tolist()))
@@ -229,9 +207,6 @@ def inference(cfg, model, yolo_model, transform):
 
         features = F.normalize(features)
         feat_index.add(features.numpy())
-        faiss.write_index(feat_index, feat_index_path)
-        # else:
-        #     feat_index = faiss.read_index(feat_index_path)
 
         images_dir = os.path.join(camera_dir, 'images')
         for image_file in os.listdir(images_dir):
@@ -244,9 +219,9 @@ def inference(cfg, model, yolo_model, transform):
                 results_per_camera[camera_name].append(results)
         
     
-    json_path = os.path.join(cfg.data_dir, 'inference1.json')
-    with open(json_path, 'w') as json_file:
-            json.dump(results_per_camera, json_file, indent=2)
+    # json_path = os.path.join(cfg.data_dir, 'inference.json')
+    # with open(json_path, 'w') as json_file:
+    #         json.dump(results_per_camera, json_file, indent=2)
     
     return results_per_camera
 
@@ -254,7 +229,7 @@ def inference(cfg, model, yolo_model, transform):
 def main():
     cfg = parse_arguments()
 
-    model = setup_model(cfg)
+    model = build_model(cfg)
     model.eval()
     yolo_model = YOLO(cfg.yolo_weights)
 

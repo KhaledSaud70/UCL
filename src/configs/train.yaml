@@ -1,13 +1,17 @@
 program: trian.py
-batch_size: 256
+backbone: resnet18
+dataset: danube
 data_dir: data/
 output_dir: ./weights
-save_every: 10
-dataset: danube
+# checkpoint:
+
+batch_size: 256
+save_every: 50
+epochs: 100
 test_percent: 0.1
-epochs: 80
+
 epsilon: 0
-lr: 0.001
+lr: 0.01
 lr_decay: step
-lr_decay_epochs: 26,53
-model: resnet18
+lr_decay_epochs: 33,66
+n_views: 2
