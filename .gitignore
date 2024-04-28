@@ -2,6 +2,6 @@ __pycache__/
 wandb/
 logs/
 notebooks/
-models/resnet.py
-models/efficientnet.py
-models/clip.py
+models/resnet
+models/efficientnet
+models/clip
