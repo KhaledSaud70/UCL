@@ -65,9 +65,6 @@ class SupConModel(nn.Module):
 
         state_dict = {k: v for k, v in state_dict.items()}
         weight_dict = {k: v for k, v in state_dict.items() if k in model_dict and model_dict[k].size() == v.size()}
-        for k, v in state_dict.items():
-            if k in model_dict and model_dict[k].size() == v.size():
-                print(k)
 
         model_dict.update(weight_dict)
         self.load_state_dict(model_dict)

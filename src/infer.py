@@ -100,6 +100,7 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
 
             topk_ids = [product["id"] for product in topk_products]
             if rf_id not in topk_ids:
+                print(rf_id, topk_ids)
                 q_box = q_box.tolist()
                 detected_product = {
                     "positionProductId": rf_id,
@@ -221,7 +222,8 @@ def inference(cfg, model, yolo_model, transform):
     json_path = os.path.join(cfg.data_dir, 'inference.json')
     with open(json_path, 'w') as json_file:
             json.dump(results_per_camera, json_file, indent=2)
-    
+
+
     return results_per_camera
 
 
@@ -237,3 +239,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+    

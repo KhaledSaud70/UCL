@@ -2,5 +2,5 @@ program: infer.py
 data_dir: data/
 camera_names: all # list of camera names or 'all'
 backbone: resnet18
-checkpoint: weights/checkpoint_100.pth
+checkpoint: weights/checkpoint_80.pth
 yolo_weights: weights/DavidK0-YOLOv8-small.pt
