@@ -12,6 +12,7 @@ class DanubeDataset(Dataset):
         self.data_dir = data_dir
         self.transform = transform
         self.id_to_class = {}
+        self.class_to_id = {}
         self.metadata = []
         self._load_data()
 
@@ -31,7 +32,12 @@ class DanubeDataset(Dataset):
                     if entry['id'] not in self.id_to_class:
                         self.id_to_class[entry['id']] = len(self.id_to_class)
                     entry['image_path'] = reference_image_path
+                    entry['class'] = self.id_to_class[entry['id']]
                     self.metadata.append(entry)
+
+        # Create class_to_id mapping
+        self.class_to_id = {v: k for k, v in self.id_to_class.items()}
+
 
     def _apply_transform(self, image):
         if self.transform:
@@ -81,11 +87,11 @@ if __name__ == '__main__':
     ])
 
     dataset = DanubeDataset(data_dir, transform=transform)
-    print(dataset.num_classes)
-    dataloader = DataLoader(dataset, batch_size=256, shuffle=False, pin_memory=True)
+    # print(dataset.num_classes)
+    # dataloader = DataLoader(dataset, batch_size=256, shuffle=False, pin_memory=True)
 
-    # mean, std = compute_mean_std(dataloader)
-    # print(f"Mean = {mean}, Std = {std}")
+    # # mean, std = compute_mean_std(dataloader)
+    # # print(f"Mean = {mean}, Std = {std}")
 
     # products_dir = os.path.join(data_dir, 'products')
     # os.makedirs(products_dir, exist_ok=True)
@@ -100,3 +106,5 @@ if __name__ == '__main__':
     #     image_pil.save(save_path)
 
     # print("Cropped images saved successfully.")
+
+    # build a model to determine the threshold value of the cosine sim for each item class

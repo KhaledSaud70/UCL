@@ -100,7 +100,6 @@ def find_misplaced_products(cfg, image, metadata, indices, detected_boxes, rf_bo
 
             topk_ids = [product["id"] for product in topk_products]
             if rf_id not in topk_ids:
-                print(rf_id, topk_ids)
                 q_box = q_box.tolist()
                 detected_product = {
                     "positionProductId": rf_id,

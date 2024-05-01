@@ -57,7 +57,7 @@ def evaluate(cfg):
         cfg.camera_names = [cfg.camera_names]
     
     results = OrderedDict({camera_name: {'statusPerImage': [], 'statusPerCamera': {}} for camera_name in cfg.camera_names})
-    inference_metadata = load_json(os.path.join(cfg.data_dir, 'inference1.json'))
+    inference_metadata = load_json(os.path.join(cfg.data_dir, 'inference.json'))
 
     overall_metrics_sum = {'precision': 0, 'recall': 0, 'f1': 0}
     overall_processed_images = 0

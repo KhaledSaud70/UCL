@@ -11376,5 +11376,3226 @@
       "image_file": "ref1-mis160_jpg.rf.ab96b07b448e58d2a6d9b214b63b952f.jpg"
     }
   ],
-  "camera_2": []
+  "camera_2": [
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 69,
+          "detectedObject": {
+            "id": 36,
+            "boundingBox": {
+              "x1": 3526.86767578125,
+              "y1": 59.47418212890625,
+              "x2": 3644.15283203125,
+              "y2": 416.7080993652344
+            },
+            "classifications": [
+              {
+                "confidence": 0.7386941909790039
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 27,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3746.890380859375,
+              "y1": 1802.924560546875,
+              "x2": 3831.680419921875,
+              "y2": 2147.245361328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.574637234210968
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3828.875,
+              "y1": 52.06489562988281,
+              "x2": 3936.50439453125,
+              "y2": 411.3969421386719
+            },
+            "classifications": [
+              {
+                "confidence": 0.5859194993972778
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 64,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3129.158935546875,
+              "y1": 1799.6326904296875,
+              "x2": 3226.956298828125,
+              "y2": 2128.904296875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6914360523223877
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 36,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 3496.144287109375,
+              "y1": 517.6460571289062,
+              "x2": 3572.008544921875,
+              "y2": 818.23291015625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6657388806343079
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3263.066650390625,
+              "y1": 52.31290054321289,
+              "x2": 3371.050048828125,
+              "y2": 406.59381103515625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6564953923225403
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 62,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3784.34375,
+              "y1": 1373.5732421875,
+              "x2": 3859.1943359375,
+              "y2": 1711.6630859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.792275071144104
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 27,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3691.948486328125,
+              "y1": 1805.142822265625,
+              "x2": 3745.097900390625,
+              "y2": 2108.57861328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6524361968040466
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis3_jpg.rf.9438df8d5f567a324853ca206a8c8de3.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 312.2732849121094,
+              "y1": 936.6949462890625,
+              "x2": 435.343994140625,
+              "y2": 1268.64111328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7393723726272583
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1440.0433349609375,
+              "y1": 515.492919921875,
+              "x2": 1538.6383056640625,
+              "y2": 831.452880859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6447128653526306
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 1,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1713.4625244140625,
+              "y1": 1363.7620849609375,
+              "x2": 1828.931884765625,
+              "y2": 1713.852783203125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6330840587615967
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1554.974853515625,
+              "y1": 516.1124267578125,
+              "x2": 1661.28271484375,
+              "y2": 835.0241088867188
+            },
+            "classifications": [
+              {
+                "confidence": 0.6106135845184326
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 249.84092712402344,
+              "y1": 506.90087890625,
+              "x2": 384.4476318359375,
+              "y2": 839.4358520507812
+            },
+            "classifications": [
+              {
+                "confidence": 0.6572961807250977
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1269.932373046875,
+              "y1": 91.78400421142578,
+              "x2": 1367.2132568359375,
+              "y2": 426.63824462890625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6170135140419006
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 62,
+            "boundingBox": {
+              "x1": 3707.88427734375,
+              "y1": 60.094215393066406,
+              "x2": 3835.101318359375,
+              "y2": 412.21429443359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6249685287475586
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 24,
+            "boundingBox": {
+              "x1": 3188.98388671875,
+              "y1": 486.98779296875,
+              "x2": 3286.65234375,
+              "y2": 822.0689697265625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7515221834182739
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 62,
+            "boundingBox": {
+              "x1": 3840.6845703125,
+              "y1": 57.55023956298828,
+              "x2": 3929.15966796875,
+              "y2": 413.5506591796875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6216284036636353
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1375.396240234375,
+              "y1": 88.82246398925781,
+              "x2": 1469.8892822265625,
+              "y2": 435.1572265625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6207258701324463
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3295.67529296875,
+              "y1": 491.4571838378906,
+              "x2": 3395.239013671875,
+              "y2": 820.5851440429688
+            },
+            "classifications": [
+              {
+                "confidence": 0.7025402188301086
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 444.9750061035156,
+              "y1": 951.6819458007812,
+              "x2": 545.3551635742188,
+              "y2": 1274.552978515625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7521638870239258
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 61,
+          "detectedObject": {
+            "id": 17,
+            "boundingBox": {
+              "x1": 3609.11376953125,
+              "y1": 1360.0799560546875,
+              "x2": 3715.0234375,
+              "y2": 1711.5841064453125
+            },
+            "classifications": [
+              {
+                "confidence": 0.9423327445983887
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 63,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3000.679931640625,
+              "y1": 1815.7470703125,
+              "x2": 3113.453369140625,
+              "y2": 2128.68115234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.5917532444000244
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 64,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3127.233154296875,
+              "y1": 1800.1534423828125,
+              "x2": 3233.4375,
+              "y2": 2135.082275390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6927608251571655
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 59,
+          "detectedObject": {
+            "id": 17,
+            "boundingBox": {
+              "x1": 3476.00341796875,
+              "y1": 1450.7197265625,
+              "x2": 3555.39013671875,
+              "y2": 1698.3968505859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.8103195428848267
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 17,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3542.884033203125,
+              "y1": 1418.6754150390625,
+              "x2": 3608.057373046875,
+              "y2": 1702.52685546875
+            },
+            "classifications": [
+              {
+                "confidence": 0.8690893650054932
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 71,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 857.7980346679688,
+              "y1": 1089.59423828125,
+              "x2": 952.1107177734375,
+              "y2": 1271.421142578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6047363877296448
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [
+        {
+          "id": 59,
+          "boundingBox": {
+            "x1": 3423.3349609375,
+            "x2": 1513.3299560546875,
+            "y1": 3500.0048828125,
+            "y2": 1703.3299560546875
+          }
+        }
+      ],
+      "image_file": "ref2-mis15_jpg.rf.7ab5c579a48d2f146aa411f02c8ed69c.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1427.4744873046875,
+              "y1": 521.6322021484375,
+              "x2": 1546.1534423828125,
+              "y2": 829.7286376953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.5809217095375061
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1556.3240966796875,
+              "y1": 506.5513610839844,
+              "x2": 1679.4930419921875,
+              "y2": 832.8676147460938
+            },
+            "classifications": [
+              {
+                "confidence": 0.5748403072357178
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1308.3929443359375,
+              "y1": 519.729248046875,
+              "x2": 1418.7698974609375,
+              "y2": 832.0449829101562
+            },
+            "classifications": [
+              {
+                "confidence": 0.6117370128631592
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1082.8428955078125,
+              "y1": 977.1920166015625,
+              "x2": 1181.3082275390625,
+              "y2": 1264.1351318359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6477720737457275
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1313.0426025390625,
+              "y1": 911.7987060546875,
+              "x2": 1422.1531982421875,
+              "y2": 1256.592041015625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6822593212127686
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1696.83251953125,
+              "y1": 492.9069519042969,
+              "x2": 1803.2510986328125,
+              "y2": 834.4934692382812
+            },
+            "classifications": [
+              {
+                "confidence": 0.6533210277557373
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 247.66836547851562,
+              "y1": 504.8858642578125,
+              "x2": 383.4570007324219,
+              "y2": 839.1178588867188
+            },
+            "classifications": [
+              {
+                "confidence": 0.6474102139472961
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3769.03076171875,
+              "y1": 485.8556823730469,
+              "x2": 3905.97705078125,
+              "y2": 822.0339965820312
+            },
+            "classifications": [
+              {
+                "confidence": 0.6683392524719238
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3607.65771484375,
+              "y1": 500.1390686035156,
+              "x2": 3753.748291015625,
+              "y2": 822.4827270507812
+            },
+            "classifications": [
+              {
+                "confidence": 0.7064477801322937
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 426.43212890625,
+              "y1": 958.2166137695312,
+              "x2": 555.8074340820312,
+              "y2": 1277.6778564453125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7317287921905518
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 42,
+            "boundingBox": {
+              "x1": 1804.9437255859375,
+              "y1": 1804.6331787109375,
+              "x2": 1914.6910400390625,
+              "y2": 2122.69775390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6210798025131226
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 7,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1923.6397705078125,
+              "y1": 1796.8792724609375,
+              "x2": 2029.5845947265625,
+              "y2": 2121.691650390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.5719529390335083
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 36,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3428.115234375,
+              "y1": 540.4962768554688,
+              "x2": 3593.080322265625,
+              "y2": 820.4176025390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6614272594451904
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3260.291259765625,
+              "y1": 64.09449768066406,
+              "x2": 3366.6083984375,
+              "y2": 416.75677490234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7448544502258301
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 3,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1507.708740234375,
+              "y1": 1817.635009765625,
+              "x2": 1600.4808349609375,
+              "y2": 2146.798828125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6786007285118103
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 49,
+          "detectedObject": {
+            "id": 44,
+            "boundingBox": {
+              "x1": 1388.6412353515625,
+              "y1": 1814.9326171875,
+              "x2": 1479.8853759765625,
+              "y2": 2146.451171875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6491122841835022
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 51,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 1607.242431640625,
+              "y1": 1802.109619140625,
+              "x2": 1692.7843017578125,
+              "y2": 2121.05029296875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6502114534378052
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1286.3790283203125,
+              "y1": 1855.110595703125,
+              "x2": 1376.1973876953125,
+              "y2": 2144.272705078125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7076776027679443
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 0,
+          "detectedObject": {
+            "id": 62,
+            "boundingBox": {
+              "x1": 485.7807312011719,
+              "y1": 70.27640533447266,
+              "x2": 615.067138671875,
+              "y2": 436.2112731933594
+            },
+            "classifications": [
+              {
+                "confidence": 0.585972785949707
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 61,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3601.983642578125,
+              "y1": 1370.4765625,
+              "x2": 3694.435302734375,
+              "y2": 1707.8861083984375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6810465455055237
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 1,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1326.846435546875,
+              "y1": 1366.9659423828125,
+              "x2": 1434.4189453125,
+              "y2": 1697.0142822265625
+            },
+            "classifications": [
+              {
+                "confidence": 0.662416934967041
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 38,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1383.3883056640625,
+              "y1": 1377.308349609375,
+              "x2": 1466.4354248046875,
+              "y2": 1698.9365234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7316758632659912
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis11_jpg.rf.ce9db80d7d8fc733358314230545a320.jpg"
+    },
+    {
+      "misplacedProducts": [],
+      "gaps": [],
+      "image_file": "ref2-mis1_jpg.rf.54ffa29c60bfbd7d7e73b9fd95fdc0b6.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 8,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 2221.922607421875,
+              "y1": 486.1351013183594,
+              "x2": 2341.52392578125,
+              "y2": 835.1206665039062
+            },
+            "classifications": [
+              {
+                "confidence": 0.7478809952735901
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1313.154296875,
+              "y1": 913.2017211914062,
+              "x2": 1422.303955078125,
+              "y2": 1257.3868408203125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6669037938117981
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1083.6561279296875,
+              "y1": 976.9744873046875,
+              "x2": 1182.0467529296875,
+              "y2": 1264.3082275390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6209852695465088
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3767.40380859375,
+              "y1": 486.729248046875,
+              "x2": 3904.786376953125,
+              "y2": 823.191162109375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6926791667938232
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3608.22607421875,
+              "y1": 506.3127746582031,
+              "x2": 3753.50048828125,
+              "y2": 822.5313110351562
+            },
+            "classifications": [
+              {
+                "confidence": 0.7148309946060181
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 248.380859375,
+              "y1": 508.6631774902344,
+              "x2": 384.8704833984375,
+              "y2": 840.8706665039062
+            },
+            "classifications": [
+              {
+                "confidence": 0.6292035579681396
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 36,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3427.541748046875,
+              "y1": 542.4841918945312,
+              "x2": 3594.38134765625,
+              "y2": 820.7327270507812
+            },
+            "classifications": [
+              {
+                "confidence": 0.6537545919418335
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3261.971435546875,
+              "y1": 63.86280059814453,
+              "x2": 3367.005126953125,
+              "y2": 417.2558288574219
+            },
+            "classifications": [
+              {
+                "confidence": 0.748326301574707
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1318.084228515625,
+              "y1": 1830.3985595703125,
+              "x2": 1400.9229736328125,
+              "y2": 2143.685546875
+            },
+            "classifications": [
+              {
+                "confidence": 0.5771982073783875
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 3,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1532.8935546875,
+              "y1": 1816.937255859375,
+              "x2": 1614.482177734375,
+              "y2": 2132.320556640625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6637797951698303
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 61,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3601.291015625,
+              "y1": 1367.56103515625,
+              "x2": 3694.33154296875,
+              "y2": 1710.321044921875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6968969106674194
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 42,
+            "boundingBox": {
+              "x1": 1813.740966796875,
+              "y1": 1805.6900634765625,
+              "x2": 1905.114013671875,
+              "y2": 2135.099853515625
+            },
+            "classifications": [
+              {
+                "confidence": 0.8132982850074768
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1405.958740234375,
+              "y1": 1803.4432373046875,
+              "x2": 1474.2012939453125,
+              "y2": 2101.183837890625
+            },
+            "classifications": [
+              {
+                "confidence": 0.5809133052825928
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 7,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1903.1048583984375,
+              "y1": 1806.2957763671875,
+              "x2": 1971.14990234375,
+              "y2": 2088.723876953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.523620069026947
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 2,
+            "boundingBox": {
+              "x1": 1459.478515625,
+              "y1": 1790.6754150390625,
+              "x2": 1525.7750244140625,
+              "y2": 2098.629150390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.8584835529327393
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis10_jpg.rf.2b1614202bc61f35623318f4c734bdbd.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 69,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3533.997314453125,
+              "y1": 52.521278381347656,
+              "x2": 3670.50244140625,
+              "y2": 413.94744873046875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6138322949409485
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 3376.9990234375,
+              "y1": 48.76637649536133,
+              "x2": 3525.552490234375,
+              "y2": 415.58074951171875
+            },
+            "classifications": [
+              {
+                "confidence": 0.5449910163879395
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 26,
+          "detectedObject": {
+            "id": 25,
+            "boundingBox": {
+              "x1": 3586.325439453125,
+              "y1": 1767.525146484375,
+              "x2": 3714.771728515625,
+              "y2": 2124.514892578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.5935213565826416
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 64,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3119.453125,
+              "y1": 1807.8951416015625,
+              "x2": 3229.23486328125,
+              "y2": 2129.699462890625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6814435124397278
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 27,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3727.64208984375,
+              "y1": 1794.185302734375,
+              "x2": 3846.619384765625,
+              "y2": 2129.220703125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6276289224624634
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 63,
+          "detectedObject": {
+            "id": 26,
+            "boundingBox": {
+              "x1": 2992.31494140625,
+              "y1": 1822.005859375,
+              "x2": 3111.384765625,
+              "y2": 2132.52294921875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6747733354568481
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3205.9541015625,
+              "y1": 482.94049072265625,
+              "x2": 3302.16845703125,
+              "y2": 822.3875122070312
+            },
+            "classifications": [
+              {
+                "confidence": 0.7769306898117065
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 36,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3453.830078125,
+              "y1": 505.7730712890625,
+              "x2": 3610.208251953125,
+              "y2": 817.73876953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6150525808334351
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3829.82958984375,
+              "y1": 51.73344802856445,
+              "x2": 3932.4638671875,
+              "y2": 413.1064453125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6035615801811218
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3258.439697265625,
+              "y1": 56.44108200073242,
+              "x2": 3370.951904296875,
+              "y2": 419.93670654296875
+            },
+            "classifications": [
+              {
+                "confidence": 0.5886728763580322
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 62,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3810.7734375,
+              "y1": 1404.4342041015625,
+              "x2": 3917.60107421875,
+              "y2": 1720.8050537109375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6515569090843201
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 17,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3575.351806640625,
+              "y1": 1403.580322265625,
+              "x2": 3668.96142578125,
+              "y2": 1711.2452392578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6431180238723755
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 2,
+            "boundingBox": {
+              "x1": 1460.15625,
+              "y1": 1780.0869140625,
+              "x2": 1533.134521484375,
+              "y2": 2091.6943359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.8871220350265503
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1346.815185546875,
+              "y1": 1808.070068359375,
+              "x2": 1449.684326171875,
+              "y2": 2110.656494140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.671951413154602
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 51,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 1624.601806640625,
+              "y1": 1790.183349609375,
+              "x2": 1706.1776123046875,
+              "y2": 2177.05126953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6957350969314575
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 59,
+          "detectedObject": {
+            "id": 17,
+            "boundingBox": {
+              "x1": 3435.692626953125,
+              "y1": 1488.77685546875,
+              "x2": 3512.91357421875,
+              "y2": 1698.609619140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.775209903717041
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 553.0050659179688,
+              "y1": 493.8533020019531,
+              "x2": 640.4620971679688,
+              "y2": 840.79736328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6848560571670532
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis4_jpg.rf.b51c29e64a0694b345ec475352d3d988.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 1969.443359375,
+              "y1": 1351.0543212890625,
+              "x2": 2086.221923828125,
+              "y2": 1711.185546875
+            },
+            "classifications": [
+              {
+                "confidence": 0.5730575323104858
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 8,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 2228.177001953125,
+              "y1": 1349.1903076171875,
+              "x2": 2351.081787109375,
+              "y2": 1710.587158203125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6575868725776672
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 25,
+          "detectedObject": {
+            "id": 26,
+            "boundingBox": {
+              "x1": 3443.571533203125,
+              "y1": 1769.633544921875,
+              "x2": 3579.960693359375,
+              "y2": 2130.692626953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6320378184318542
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 58,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3881.482666015625,
+              "y1": 892.7454223632812,
+              "x2": 3996.9384765625,
+              "y2": 1241.3984375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7537893652915955
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 69,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3535.239501953125,
+              "y1": 49.84818649291992,
+              "x2": 3671.4462890625,
+              "y2": 413.2240295410156
+            },
+            "classifications": [
+              {
+                "confidence": 0.6174077987670898
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 64,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3119.4404296875,
+              "y1": 1805.9288330078125,
+              "x2": 3227.989990234375,
+              "y2": 2124.32861328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7284259796142578
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 27,
+          "detectedObject": {
+            "id": 11,
+            "boundingBox": {
+              "x1": 3736.23974609375,
+              "y1": 1796.8155517578125,
+              "x2": 3850.269287109375,
+              "y2": 2137.0029296875
+            },
+            "classifications": [
+              {
+                "confidence": 0.623956024646759
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3377.9765625,
+              "y1": 46.163082122802734,
+              "x2": 3526.672119140625,
+              "y2": 412.7855529785156
+            },
+            "classifications": [
+              {
+                "confidence": 0.5797345042228699
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 63,
+          "detectedObject": {
+            "id": 26,
+            "boundingBox": {
+              "x1": 2993.41845703125,
+              "y1": 1807.6324462890625,
+              "x2": 3111.5654296875,
+              "y2": 2125.78369140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6887795925140381
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3206.41943359375,
+              "y1": 482.4176025390625,
+              "x2": 3302.6923828125,
+              "y2": 823.1749877929688
+            },
+            "classifications": [
+              {
+                "confidence": 0.8019818067550659
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3774.080322265625,
+              "y1": 486.0718688964844,
+              "x2": 3915.227294921875,
+              "y2": 822.09912109375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7099518179893494
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 555.4205322265625,
+              "y1": 496.7270812988281,
+              "x2": 662.7157592773438,
+              "y2": 843.8491821289062
+            },
+            "classifications": [
+              {
+                "confidence": 0.6896347403526306
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 51,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 1626.545166015625,
+              "y1": 1807.924560546875,
+              "x2": 1712.998046875,
+              "y2": 2155.534912109375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7151899337768555
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 1,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1443.88427734375,
+              "y1": 1355.9251708984375,
+              "x2": 1554.8572998046875,
+              "y2": 1706.8756103515625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6518911123275757
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3831.4033203125,
+              "y1": 51.38572692871094,
+              "x2": 3933.40625,
+              "y2": 409.4603271484375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6116763949394226
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 36,
+          "detectedObject": {
+            "id": 11,
+            "boundingBox": {
+              "x1": 3433.917236328125,
+              "y1": 519.5626220703125,
+              "x2": 3601.751708984375,
+              "y2": 815.1322631835938
+            },
+            "classifications": [
+              {
+                "confidence": 0.6387261152267456
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 17,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3571.40576171875,
+              "y1": 1410.623291015625,
+              "x2": 3669.8525390625,
+              "y2": 1708.2047119140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7291032671928406
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1340.569580078125,
+              "y1": 1816.454345703125,
+              "x2": 1411.502685546875,
+              "y2": 2115.72119140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6749266982078552
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 3,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1534.7554931640625,
+              "y1": 1813.9725341796875,
+              "x2": 1619.165283203125,
+              "y2": 2112.8349609375
+            },
+            "classifications": [
+              {
+                "confidence": 0.5475848913192749
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 35,
+          "detectedObject": {
+            "id": 48,
+            "boundingBox": {
+              "x1": 3316.5126953125,
+              "y1": 918.142333984375,
+              "x2": 3423.505126953125,
+              "y2": 1247.77490234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6662598848342896
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1818.7498779296875,
+              "y1": 1791.492919921875,
+              "x2": 1909.378662109375,
+              "y2": 2111.065673828125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6397546529769897
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1416.6927490234375,
+              "y1": 1817.8531494140625,
+              "x2": 1511.5928955078125,
+              "y2": 2141.369384765625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6323816776275635
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 62,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3800.114501953125,
+              "y1": 1403.6983642578125,
+              "x2": 3918.31298828125,
+              "y2": 1711.5654296875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6499195098876953
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3258.461181640625,
+              "y1": 58.573150634765625,
+              "x2": 3374.220458984375,
+              "y2": 417.743896484375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6232205629348755
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 7,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1919.767822265625,
+              "y1": 1805.2376708984375,
+              "x2": 2021.653076171875,
+              "y2": 2156.523193359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6888593435287476
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 447.6256408691406,
+              "y1": 947.0072021484375,
+              "x2": 541.3460693359375,
+              "y2": 1269.208740234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7091817259788513
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis5_jpg.rf.8df050960ef0b5b3c2777bea5666e315.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1425.2783203125,
+              "y1": 907.6825561523438,
+              "x2": 1546.9713134765625,
+              "y2": 1256.344482421875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6023828983306885
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 313.3301696777344,
+              "y1": 936.8351440429688,
+              "x2": 436.3648986816406,
+              "y2": 1268.5604248046875
+            },
+            "classifications": [
+              {
+                "confidence": 0.7544492483139038
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1559.08056640625,
+              "y1": 907.6946411132812,
+              "x2": 1676.6265869140625,
+              "y2": 1260.1051025390625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6181410551071167
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1034.1253662109375,
+              "y1": 121.39144134521484,
+              "x2": 1156.0567626953125,
+              "y2": 438.4476318359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7283196449279785
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1071.219482421875,
+              "y1": 541.4925537109375,
+              "x2": 1181.762939453125,
+              "y2": 834.5517578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6090134382247925
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1477.9259033203125,
+              "y1": 88.43065643310547,
+              "x2": 1578.249755859375,
+              "y2": 432.2869873046875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6278741359710693
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 1,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1713.86474609375,
+              "y1": 1359.4306640625,
+              "x2": 1823.5869140625,
+              "y2": 1716.4554443359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6394153833389282
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 250.57400512695312,
+              "y1": 504.92822265625,
+              "x2": 385.9117431640625,
+              "y2": 839.9421997070312
+            },
+            "classifications": [
+              {
+                "confidence": 0.6445809602737427
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1386.5108642578125,
+              "y1": 88.41024017333984,
+              "x2": 1471.1536865234375,
+              "y2": 433.8156433105469
+            },
+            "classifications": [
+              {
+                "confidence": 0.6027607917785645
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 61,
+          "detectedObject": {
+            "id": 17,
+            "boundingBox": {
+              "x1": 3606.16162109375,
+              "y1": 1355.0235595703125,
+              "x2": 3700.5615234375,
+              "y2": 1718.185791015625
+            },
+            "classifications": [
+              {
+                "confidence": 0.8866273164749146
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 446.05084228515625,
+              "y1": 951.2994995117188,
+              "x2": 546.7151489257812,
+              "y2": 1273.0413818359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7546132802963257
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3307.262939453125,
+              "y1": 497.756103515625,
+              "x2": 3394.668212890625,
+              "y2": 821.3375244140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7036763429641724
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 42,
+          "detectedObject": {
+            "id": 48,
+            "boundingBox": {
+              "x1": 2122.5556640625,
+              "y1": 1798.394775390625,
+              "x2": 2226.655517578125,
+              "y2": 2123.100341796875
+            },
+            "classifications": [
+              {
+                "confidence": 0.9704933166503906
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 66,
+          "detectedObject": {
+            "id": 53,
+            "boundingBox": {
+              "x1": 2945.986572265625,
+              "y1": 1332.232666015625,
+              "x2": 3036.888671875,
+              "y2": 1705.3577880859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7124600410461426
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 17,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3535.6044921875,
+              "y1": 1415.1392822265625,
+              "x2": 3602.338134765625,
+              "y2": 1704.9664306640625
+            },
+            "classifications": [
+              {
+                "confidence": 0.8512206673622131
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 0,
+          "detectedObject": {
+            "id": 5,
+            "boundingBox": {
+              "x1": 486.6550598144531,
+              "y1": 73.1117172241211,
+              "x2": 610.4544067382812,
+              "y2": 438.98565673828125
+            },
+            "classifications": [
+              {
+                "confidence": 0.5938740372657776
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis14_jpg.rf.f8921cd1a2221483f79d8abe829e88e4.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1427.6884765625,
+              "y1": 522.2779541015625,
+              "x2": 1544.530029296875,
+              "y2": 831.2640380859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.5823447704315186
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1556.19677734375,
+              "y1": 510.5359191894531,
+              "x2": 1678.8946533203125,
+              "y2": 832.5997314453125
+            },
+            "classifications": [
+              {
+                "confidence": 0.5771976709365845
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1308.1502685546875,
+              "y1": 521.7408447265625,
+              "x2": 1418.1436767578125,
+              "y2": 832.367919921875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6055111885070801
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1313.47265625,
+              "y1": 911.8330078125,
+              "x2": 1422.4248046875,
+              "y2": 1256.75
+            },
+            "classifications": [
+              {
+                "confidence": 0.701785683631897
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 62,
+            "boundingBox": {
+              "x1": 3767.03271484375,
+              "y1": 480.38092041015625,
+              "x2": 3906.951171875,
+              "y2": 822.511474609375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6300128102302551
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 247.40692138671875,
+              "y1": 504.4947814941406,
+              "x2": 383.64080810546875,
+              "y2": 839.0104370117188
+            },
+            "classifications": [
+              {
+                "confidence": 0.6319860219955444
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 2,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1696.335205078125,
+              "y1": 492.1531677246094,
+              "x2": 1798.299072265625,
+              "y2": 834.0191040039062
+            },
+            "classifications": [
+              {
+                "confidence": 0.672051191329956
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 42,
+            "boundingBox": {
+              "x1": 1804.54638671875,
+              "y1": 1803.084228515625,
+              "x2": 1914.1258544921875,
+              "y2": 2125.698486328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6190736293792725
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 69,
+          "detectedObject": {
+            "id": 36,
+            "boundingBox": {
+              "x1": 3543.336669921875,
+              "y1": 54.704368591308594,
+              "x2": 3660.37451171875,
+              "y2": 415.0606384277344
+            },
+            "classifications": [
+              {
+                "confidence": 0.7141134142875671
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3258.593017578125,
+              "y1": 64.61949157714844,
+              "x2": 3354.01318359375,
+              "y2": 419.42578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7366534471511841
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1093.04296875,
+              "y1": 970.00927734375,
+              "x2": 1179.3367919921875,
+              "y2": 1260.802734375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6595417261123657
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 7,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1922.9736328125,
+              "y1": 1795.0489501953125,
+              "x2": 2029.5853271484375,
+              "y2": 2124.03369140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.5467771291732788
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 3,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1505.257080078125,
+              "y1": 1816.07275390625,
+              "x2": 1600.6373291015625,
+              "y2": 2143.302734375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6738489866256714
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 23,
+            "boundingBox": {
+              "x1": 3262.05029296875,
+              "y1": 490.981689453125,
+              "x2": 3368.013427734375,
+              "y2": 822.3843994140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.9846607446670532
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 441.2142333984375,
+              "y1": 957.32177734375,
+              "x2": 548.83984375,
+              "y2": 1275.3389892578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7141490578651428
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 1119.7708740234375,
+              "y1": 1403.46337890625,
+              "x2": 1216.2315673828125,
+              "y2": 1708.80517578125
+            },
+            "classifications": [
+              {
+                "confidence": 0.5568054914474487
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3359.517822265625,
+              "y1": 55.658531188964844,
+              "x2": 3527.452880859375,
+              "y2": 416.1734619140625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6143605709075928
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 10,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1222.9478759765625,
+              "y1": 1408.3560791015625,
+              "x2": 1313.5172119140625,
+              "y2": 1713.330078125
+            },
+            "classifications": [
+              {
+                "confidence": 0.5781728029251099
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 51,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 1610.4630126953125,
+              "y1": 1797.7867431640625,
+              "x2": 1698.54931640625,
+              "y2": 2126.877685546875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6299265623092651
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 17,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3603.0732421875,
+              "y1": 1372.0389404296875,
+              "x2": 3691.90234375,
+              "y2": 1708.1192626953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6821998357772827
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis12_jpg.rf.f6e8f4f0a4034528b1666b460d947501.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 8,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 2223.3046875,
+              "y1": 486.22076416015625,
+              "x2": 2347.668212890625,
+              "y2": 831.7840576171875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6086132526397705
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 244.5845489501953,
+              "y1": 502.866455078125,
+              "x2": 382.0868835449219,
+              "y2": 838.9910888671875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6575889587402344
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1425.6612548828125,
+              "y1": 499.7383117675781,
+              "x2": 1549.3538818359375,
+              "y2": 827.0222778320312
+            },
+            "classifications": [
+              {
+                "confidence": 0.5770473480224609
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 4,
+          "detectedObject": {
+            "id": 65,
+            "boundingBox": {
+              "x1": 1316.16845703125,
+              "y1": 482.57733154296875,
+              "x2": 1416.416015625,
+              "y2": 830.934326171875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6123515367507935
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1089.2666015625,
+              "y1": 973.229248046875,
+              "x2": 1175.532958984375,
+              "y2": 1264.51953125
+            },
+            "classifications": [
+              {
+                "confidence": 0.6689311265945435
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 69,
+          "detectedObject": {
+            "id": 36,
+            "boundingBox": {
+              "x1": 3500.642578125,
+              "y1": 56.6288948059082,
+              "x2": 3657.98046875,
+              "y2": 412.7397155761719
+            },
+            "classifications": [
+              {
+                "confidence": 0.7114754319190979
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 440.4434814453125,
+              "y1": 956.6361694335938,
+              "x2": 550.512451171875,
+              "y2": 1276.542236328125
+            },
+            "classifications": [
+              {
+                "confidence": 0.754830002784729
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3262.640380859375,
+              "y1": 62.01605987548828,
+              "x2": 3358.157470703125,
+              "y2": 414.93255615234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.753017783164978
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 0,
+          "detectedObject": {
+            "id": 63,
+            "boundingBox": {
+              "x1": 481.58685302734375,
+              "y1": 67.29269409179688,
+              "x2": 602.9642333984375,
+              "y2": 438.4809265136719
+            },
+            "classifications": [
+              {
+                "confidence": 0.5653092265129089
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 22,
+          "detectedObject": {
+            "id": 11,
+            "boundingBox": {
+              "x1": 865.639892578125,
+              "y1": 634.6485595703125,
+              "x2": 942.91552734375,
+              "y2": 830.767822265625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6090527772903442
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 61,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3608.725830078125,
+              "y1": 1367.57470703125,
+              "x2": 3692.455322265625,
+              "y2": 1709.8697509765625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7135689854621887
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis13_jpg.rf.6d58cf0b6f79e2e98d7f2dfa679b6a2b.jpg"
+    },
+    {
+      "misplacedProducts": [
+        {
+          "positionProductId": 69,
+          "detectedObject": {
+            "id": 62,
+            "boundingBox": {
+              "x1": 3533.575439453125,
+              "y1": 67.39868927001953,
+              "x2": 3674.74609375,
+              "y2": 417.3432922363281
+            },
+            "classifications": [
+              {
+                "confidence": 0.6508067846298218
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 1975.3243408203125,
+              "y1": 1356.081787109375,
+              "x2": 2096.0400390625,
+              "y2": 1705.1842041015625
+            },
+            "classifications": [
+              {
+                "confidence": 0.5543131828308105
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 58,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3882.22216796875,
+              "y1": 911.31689453125,
+              "x2": 3999.0380859375,
+              "y2": 1239.423828125
+            },
+            "classifications": [
+              {
+                "confidence": 0.7112050652503967
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 32,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3373.406982421875,
+              "y1": 63.646080017089844,
+              "x2": 3525.1435546875,
+              "y2": 416.9834289550781
+            },
+            "classifications": [
+              {
+                "confidence": 0.7003805637359619
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 62,
+            "boundingBox": {
+              "x1": 3683.738037109375,
+              "y1": 66.56659698486328,
+              "x2": 3817.400390625,
+              "y2": 414.4454650878906
+            },
+            "classifications": [
+              {
+                "confidence": 0.6342179775238037
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 8,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 2232.755859375,
+              "y1": 67.08221435546875,
+              "x2": 2366.660888671875,
+              "y2": 427.52734375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6132866144180298
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3607.760009765625,
+              "y1": 499.68023681640625,
+              "x2": 3753.028076171875,
+              "y2": 822.4290771484375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7458418011665344
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 34,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3766.304443359375,
+              "y1": 488.5660400390625,
+              "x2": 3903.630615234375,
+              "y2": 823.9126586914062
+            },
+            "classifications": [
+              {
+                "confidence": 0.6333547830581665
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 20,
+            "boundingBox": {
+              "x1": 3251.015625,
+              "y1": 64.84832763671875,
+              "x2": 3367.905517578125,
+              "y2": 418.0793762207031
+            },
+            "classifications": [
+              {
+                "confidence": 0.7186182737350464
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 27,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 3721.330322265625,
+              "y1": 1787.64990234375,
+              "x2": 3840.5595703125,
+              "y2": 2126.962646484375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6328942775726318
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 20,
+          "detectedObject": {
+            "id": 24,
+            "boundingBox": {
+              "x1": 3086.894287109375,
+              "y1": 503.7733154296875,
+              "x2": 3191.23876953125,
+              "y2": 822.7552490234375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6841500401496887
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 54,
+          "detectedObject": {
+            "id": 43,
+            "boundingBox": {
+              "x1": 439.1288757324219,
+              "y1": 959.642333984375,
+              "x2": 561.6580810546875,
+              "y2": 1270.045166015625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7812240719795227
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 33,
+          "detectedObject": {
+            "id": 57,
+            "boundingBox": {
+              "x1": 544.2568359375,
+              "y1": 499.1708984375,
+              "x2": 666.2930908203125,
+              "y2": 851.9865112304688
+            },
+            "classifications": [
+              {
+                "confidence": 0.653654932975769
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1421.81298828125,
+              "y1": 1815.0474853515625,
+              "x2": 1515.3944091796875,
+              "y2": 2125.212890625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6454850435256958
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 8,
+          "detectedObject": {
+            "id": 0,
+            "boundingBox": {
+              "x1": 2243.080078125,
+              "y1": 1354.4576416015625,
+              "x2": 2360.02294921875,
+              "y2": 1698.2298583984375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6096993684768677
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 1,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1444.8883056640625,
+              "y1": 1364.4344482421875,
+              "x2": 1559.971435546875,
+              "y2": 1694.5247802734375
+            },
+            "classifications": [
+              {
+                "confidence": 0.604476809501648
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 23,
+          "detectedObject": {
+            "id": 24,
+            "boundingBox": {
+              "x1": 3200.95068359375,
+              "y1": 503.6872863769531,
+              "x2": 3308.770751953125,
+              "y2": 822.1450805664062
+            },
+            "classifications": [
+              {
+                "confidence": 0.7073556184768677
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 68,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3823.3994140625,
+              "y1": 62.56216812133789,
+              "x2": 3948.35986328125,
+              "y2": 417.70068359375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6088481545448303
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 47,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1103.2364501953125,
+              "y1": 974.8386840820312,
+              "x2": 1205.0377197265625,
+              "y2": 1264.244873046875
+            },
+            "classifications": [
+              {
+                "confidence": 0.718559980392456
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 64,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 3116.49072265625,
+              "y1": 1811.8072509765625,
+              "x2": 3225.679931640625,
+              "y2": 2122.82958984375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6355034708976746
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 35,
+          "detectedObject": {
+            "id": 48,
+            "boundingBox": {
+              "x1": 3435.70556640625,
+              "y1": 924.5330810546875,
+              "x2": 3572.7861328125,
+              "y2": 1243.7373046875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6279270648956299
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 3,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1522.9603271484375,
+              "y1": 1810.621337890625,
+              "x2": 1613.0272216796875,
+              "y2": 2123.08544921875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6541637182235718
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 7,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1924.6475830078125,
+              "y1": 1798.0093994140625,
+              "x2": 2042.539306640625,
+              "y2": 2119.843505859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6182437539100647
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 17,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3579.51025390625,
+              "y1": 1406.43212890625,
+              "x2": 3674.275634765625,
+              "y2": 1701.681396484375
+            },
+            "classifications": [
+              {
+                "confidence": 0.7348934412002563
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 51,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 1621.7100830078125,
+              "y1": 1805.2618408203125,
+              "x2": 1718.845947265625,
+              "y2": 2118.319091796875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6341758966445923
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 50,
+          "detectedObject": {
+            "id": 56,
+            "boundingBox": {
+              "x1": 1325.1583251953125,
+              "y1": 1817.11376953125,
+              "x2": 1414.9443359375,
+              "y2": 2126.031005859375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6796079874038696
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 0,
+          "detectedObject": {
+            "id": 5,
+            "boundingBox": {
+              "x1": 490.77264404296875,
+              "y1": 74.1578598022461,
+              "x2": 615.4913940429688,
+              "y2": 435.6961364746094
+            },
+            "classifications": [
+              {
+                "confidence": 0.5928008556365967
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 10,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1212.857666015625,
+              "y1": 974.9943237304688,
+              "x2": 1301.902587890625,
+              "y2": 1262.4056396484375
+            },
+            "classifications": [
+              {
+                "confidence": 0.6900672912597656
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 63,
+          "detectedObject": {
+            "id": 26,
+            "boundingBox": {
+              "x1": 2993.42919921875,
+              "y1": 1805.8067626953125,
+              "x2": 3106.344970703125,
+              "y2": 2120.353759765625
+            },
+            "classifications": [
+              {
+                "confidence": 0.7244002223014832
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 6,
+          "detectedObject": {
+            "id": 67,
+            "boundingBox": {
+              "x1": 1799.8531494140625,
+              "y1": 1801.3741455078125,
+              "x2": 1919.3118896484375,
+              "y2": 2117.69482421875
+            },
+            "classifications": [
+              {
+                "confidence": 0.6300294399261475
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 36,
+          "detectedObject": {
+            "id": 59,
+            "boundingBox": {
+              "x1": 3431.41650390625,
+              "y1": 501.54144287109375,
+              "x2": 3596.603515625,
+              "y2": 818.7296752929688
+            },
+            "classifications": [
+              {
+                "confidence": 0.6455159187316895
+              }
+            ]
+          }
+        },
+        {
+          "positionProductId": 62,
+          "detectedObject": {
+            "id": 5,
+            "boundingBox": {
+              "x1": 3817.814697265625,
+              "y1": 1436.6007080078125,
+              "x2": 3912.503173828125,
+              "y2": 1717.4791259765625
+            },
+            "classifications": [
+              {
+                "confidence": 0.6406278610229492
+              }
+            ]
+          }
+        }
+      ],
+      "gaps": [],
+      "image_file": "ref2-mis7_jpg.rf.b26ec467e0c36d3026209ff1b69b327d.jpg"
+    }
+  ]
 }
